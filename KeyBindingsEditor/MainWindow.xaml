@@ -4,137 +4,35 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:KeyBindingsEditor"
+        xmlns:ui="http://schemas.modernwpf.com/2019"
+        ui:WindowHelper.UseModernWindowStyle="True"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
-    <Window.Resources>
-        <Style x:Key="IconButtonTextStyle" TargetType="Control">
-            <Setter Property="FontFamily"
-                    Value="Segoe MDL2 Assets"/>
-            <Setter Property="VerticalAlignment"
-                    Value="Center"/>
-            <Setter Property="HorizontalAlignment"
-                    Value="Left"/>
-            <Setter Property="Foreground"
-                    Value="White"/>
-            <Setter Property="FontSize"
-                    Value="20"/>
-        </Style>
-        <Style x:Key="IconTextStyle" TargetType="TextBlock">
-            <Setter Property="FontFamily"
-                Value="Segoe MDL2 Assets"/>
-            <Setter Property="VerticalAlignment"
-                Value="Center"/>
-            <Setter Property="HorizontalAlignment"
-                Value="Left"/>
-            <Setter Property="Foreground"
-                Value="White"/>
-            <Setter Property="FontSize"
-                Value="20"/>
-        </Style>
-        <Style x:Key="ToggleStyle" TargetType="{x:Type ToggleButton}">
-
-            <Setter Property="Template">
-
-                <Setter.Value>
-
-                    <ControlTemplate TargetType="{x:Type ToggleButton}">
-
-                        <Border  x:Name="border"
-                                 BorderThickness="{TemplateBinding BorderThickness}"
-                                 Background="{TemplateBinding Background}"
-                                 SnapsToDevicePixels="True">
-
-                        </Border>
-
-                        <ControlTemplate.Triggers>
-
-                            <Trigger Property="IsMouseOver" Value="true">
-
-                                <Setter Property="Background"
-                                        TargetName="border"
-                                        Value="#40FFFFFF"/>
-
-                                <Setter Property="BorderBrush"
-                                        TargetName="border"
-                                        Value="Transparent"/>
-
-                            </Trigger>
-
-                            <Trigger Property="IsChecked" Value="true">
-
-                                <Setter Property="Background"
-                                        TargetName="border"
-                                        Value="#AAAAAA"/>
-
-                                <Setter Property="BorderBrush"
-                                        TargetName="border"
-                                        Value="Transparent"/>
-
-                            </Trigger>
-
-                        </ControlTemplate.Triggers>
-
-                    </ControlTemplate>
-
-                </Setter.Value>
-
-            </Setter>
-
-        </Style>
-    </Window.Resources>
     <Grid>
-        <Grid x:Name="NavigationPanel"
-              HorizontalAlignment="Left"
-              Width="65"
-              Background="#2E333A">
-            <StackPanel>
-                <Grid Height="90">
-                    <TextBlock 
-                        Grid.Row="1"
-                        Grid.Column="0"
-                        Margin="73,-20,0,0"
-                        Text="M E N U"
-                        Foreground="White"
-                        FontSize="22"
-                        Background="Transparent"
-                        HorizontalAlignment="Left"
-                        VerticalAlignment="Center"/>
+        <ui:NavigationView
+            x:Name="NavView"
+            IsBackButtonVisible="Collapsed"
+            IsBackEnabled="False"
+            IsPaneOpen="True"
+            IsSettingsVisible="False">
 
-                    <ToggleButton 
-                        Grid.Column="0"
-                        VerticalAlignment="Center"
-                        HorizontalAlignment="Left"
-                        Margin="18,-20,0,0"
-                        Height="30"
-                        Width="30"
-                        BorderThickness="0"
-                        Background="Transparent"
-                        Content="&#xE700;"
-                        FontFamily="Segoe MDL2 Assets"
-                        Foreground="White"
-                        Style="{StaticResource ToggleStyle}"/>
-                </Grid>
-                <ListView 
-                    x:Name="MenuListView" 
-                    Background="Transparent" 
-                    Foreground="Transparent" 
-                    ScrollViewer.HorizontalScrollBarVisibility="Disabled">
-                    <!-- Keyboard editor -->
-                    <ListViewItem
-                        HorizontalAlignment="Left"
-                        Margin="0,0,0,15"
-                        MouseEnter="ListViewItem_MouseEnter">
-                        <StackPanel
-                            Orientation="Horizontal"
-                            Width="230">
-                            <TextBlock 
-                                Text="&#xE961;" 
-                                Style="{StaticResource IconTextStyle}" 
-                                Margin="12,0,0,0"/>
-                        </StackPanel>
-                    </ListViewItem>
-                </ListView>
-            </StackPanel>
-        </Grid>
+            <ui:NavigationView.MenuItems>
+                <ui:NavigationViewItem IsSelected="True" Icon="Keyboard" Content="Keyboard" />
+                <ui:NavigationViewItem Content="Mouse">
+                    <ui:NavigationViewItem.Icon>
+                        <ui:FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE962;"/>
+                    </ui:NavigationViewItem.Icon>
+                </ui:NavigationViewItem>
+                <ui:NavigationViewItem Content="Gamepad">
+                    <ui:NavigationViewItem.Icon>
+                        <ui:FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE7FC;"/>
+                    </ui:NavigationViewItem.Icon>
+                </ui:NavigationViewItem>
+            </ui:NavigationView.MenuItems>
+
+            <Border>
+                
+            </Border>
+        </ui:NavigationView>
     </Grid>
 </Window>
