@@ -1,20 +1,28 @@
-﻿<Window x:Class="KeyBindingsEditor.MainWindow"
+﻿<Window
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:KeyBindingsEditor"
         xmlns:ui="http://schemas.modernwpf.com/2019"
+        xmlns:ViewModel="clr-namespace:KeyBindingsEditor.ViewModel" x:Class="KeyBindingsEditor.MainWindow"
         ui:WindowHelper.UseModernWindowStyle="True"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
-    <Grid>
+        Height="700" Width="1600" 
+        DataContext="{StaticResource Editor}"
+        Background="{StaticResource WindowBackground}"
+        Title="{Binding WindowTitle}">
+    <Window.Resources>
+        <ViewModel:NullEqualsConverter x:Key="NullChecker"/>
+    </Window.Resources>
+    <Grid Background="#B0000000">
         <ui:NavigationView
             x:Name="NavView"
             IsBackButtonVisible="Collapsed"
             IsBackEnabled="False"
-            IsPaneOpen="True"
-            IsSettingsVisible="False">
+            IsPaneOpen="False"
+            IsSettingsVisible="False"
+            SelectionChanged="NavView_SelectionChanged">
 
             <ui:NavigationView.MenuItems>
                 <ui:NavigationViewItem IsSelected="True" Icon="Keyboard" Content="Keyboard" />
@@ -28,10 +36,147 @@
                         <ui:FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE7FC;"/>
                     </ui:NavigationViewItem.Icon>
                 </ui:NavigationViewItem>
+                <ui:NavigationViewItem Content="Categories">
+                    <ui:NavigationViewItem.Icon>
+                        <ui:FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE762;"/>
+                    </ui:NavigationViewItem.Icon>
+                </ui:NavigationViewItem>
             </ui:NavigationView.MenuItems>
 
             <Border>
-                
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="40"/>
+                        <RowDefinition Height="450"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <DockPanel>
+                        <Menu DockPanel.Dock="Top" Background="#D01f1f1f">
+                            <MenuItem Header="_File" Foreground="White">
+                                <MenuItem Header="_Create" Name="CreateWorld" Click="CreateFile_Click"/>
+                                <MenuItem Header="_Open..." Name="OpenWorld" Click="OpenFile_Click" />
+                                <MenuItem Header="_Save..." Name="SaveWorld" Click="SaveFile_Click" />
+                                <MenuItem Header="Save _As..." Name="SaveWorldAs" Click="SaveFileAs_Click" />
+                            </MenuItem>
+                        </Menu>
+                    </DockPanel>
+                    <Frame x:Name="CurrentPageFrame" NavigationUIVisibility="Hidden" Grid.Row="1"/>
+                    <GridSplitter VerticalAlignment="Center" HorizontalAlignment="Stretch" Grid.Row="2" Height="3"/>
+                    <Grid x:Name="Properties" Background="#E01f1f1f" Grid.Row="3">
+                        <StackPanel Name="PropertiesPanel" Orientation="Horizontal" Margin="4"
+                                    DataContext="{Binding SelectedBinding}" IsEnabled="{Binding Converter={StaticResource NullChecker}, Mode=OneWay}" >
+                            <StackPanel Orientation="Vertical" Width="300">
+                                <StackPanel Name="CheckBoxPanel" Orientation="Horizontal">
+                                    <CheckBox Margin="2 0" Height="{Binding Path=ActualHeight, ElementName=CheckBoxPanel}" MinWidth="0" 
+                                              Width="{Binding Path=ActualHeight, RelativeSource={RelativeSource Self}}" x:Name="IsClickEnabled"
+                                              Checked="IsClickEnabled_Checked" Unchecked="IsClickEnabled_Checked"/>
+                                    <TextBlock Text="Click binding" Foreground="White" FontSize="20" Margin="2"/>
+                                    <!-- for CheckBox Content -->
+                                </StackPanel>
+                                <ComboBox HorizontalAlignment="Stretch" Margin="3" x:Name="ClickCategory" d:ItemsSource="{d:SampleData}" SelectionChanged="ClickCategory_SelectionChanged"
+                                          DataContext="{StaticResource Editor}" ItemsSource="{Binding Configuration.Categories}" IsEnabled="False">
+                                    <ComboBox.ItemTemplate>
+                                        <DataTemplate>
+                                            <StackPanel Orientation="Horizontal">
+                                                <Rectangle Width="20" Height="20" Margin="4">
+                                                    <Rectangle.Fill>
+                                                        <SolidColorBrush Color="{Binding Color}"/>
+                                                    </Rectangle.Fill>
+                                                </Rectangle>
+                                                <TextBlock Text="{Binding Name}"/>
+                                            </StackPanel>
+                                        </DataTemplate>
+                                    </ComboBox.ItemTemplate>
+                                </ComboBox>
+                                <TextBlock Text="Action" Foreground="White" FontSize="20" />
+                                <ComboBox HorizontalAlignment="Stretch" Margin="3" x:Name="ClickAction" SelectionChanged="ClickAction_SelectionChanged"
+                                    DataContext="{Binding SelectedValue, ElementName=ClickCategory}" ItemsSource="{Binding Actions}" IsEnabled="False">
+                                    <ComboBox.ItemTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding Name}"/>
+                                        </DataTemplate>
+                                    </ComboBox.ItemTemplate>
+                                </ComboBox>
+                            </StackPanel>
+
+                            <StackPanel Orientation="Vertical" Width="300">
+                                <StackPanel Name="DoubleClickCheckBoxPanel" Orientation="Horizontal">
+                                    <CheckBox Margin="2 0" Height="{Binding Path=ActualHeight, ElementName=CheckBoxPanel}" MinWidth="0" 
+                                            Width="{Binding Path=ActualHeight, RelativeSource={RelativeSource Self}}" x:Name="IsDoubleClickEnabled"
+                                            Checked="IsDoubleClickEnabled_Checked" Unchecked="IsDoubleClickEnabled_Checked"/>
+                                    <TextBlock Text="Double click binding" Foreground="White" FontSize="20" Margin="2"/>
+                                    <!-- for CheckBox Content -->
+                                </StackPanel>
+                                <ComboBox HorizontalAlignment="Stretch" Margin="3" x:Name="DoubleClickCategory" d:ItemsSource="{d:SampleData}" SelectionChanged="DoubleClickCategory_SelectionChanged"
+                                    DataContext="{StaticResource Editor}" ItemsSource="{Binding Configuration.Categories}" IsEnabled="False">
+                                    <ComboBox.ItemTemplate>
+                                        <DataTemplate>
+                                            <StackPanel Orientation="Horizontal">
+                                                <Rectangle Width="20" Height="20" Margin="4">
+                                                    <Rectangle.Fill>
+                                                        <SolidColorBrush Color="{Binding Color}"/>
+                                                    </Rectangle.Fill>
+                                                </Rectangle>
+                                                <TextBlock Text="{Binding Name}"/>
+                                            </StackPanel>
+                                        </DataTemplate>
+                                    </ComboBox.ItemTemplate>
+                                </ComboBox>
+                                <TextBlock Text="Action" Foreground="White" FontSize="20" />
+                                <ComboBox HorizontalAlignment="Stretch" Margin="3" x:Name="DoubleClickAction" SelectionChanged="DoubleClickAction_SelectionChanged"
+                                        DataContext="{Binding SelectedValue, ElementName=ClickCategory}" ItemsSource="{Binding Actions}" IsEnabled="False">
+                                    <ComboBox.ItemTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding Name}"/>
+                                        </DataTemplate>
+                                    </ComboBox.ItemTemplate>
+                                </ComboBox>
+                            </StackPanel>
+
+                            <StackPanel Orientation="Vertical" Width="300">
+                                <StackPanel Name="HoldCheckBoxPanel" Orientation="Horizontal">
+                                    <CheckBox Margin="2 0" Height="{Binding Path=ActualHeight, ElementName=CheckBoxPanel}" MinWidth="0" 
+                                            Width="{Binding Path=ActualHeight, RelativeSource={RelativeSource Self}}" x:Name="IsHoldEnabled"
+                                            Checked="IsHoldEnabled_Checked" Unchecked="IsHoldEnabled_Checked"/>
+                                    <TextBlock Text="Hold binding" Foreground="White" FontSize="20" Margin="2"/>
+                                    <!-- for CheckBox Content -->
+                                </StackPanel>
+                                <ComboBox HorizontalAlignment="Stretch" Margin="3" x:Name="HoldCategory" d:ItemsSource="{d:SampleData}" SelectionChanged="HoldCategory_SelectionChanged"
+                                    DataContext="{StaticResource Editor}" ItemsSource="{Binding Configuration.Categories}" IsEnabled="False">
+                                    <ComboBox.ItemTemplate>
+                                        <DataTemplate>
+                                            <StackPanel Orientation="Horizontal">
+                                                <Rectangle Width="20" Height="20" Margin="4">
+                                                    <Rectangle.Fill>
+                                                        <SolidColorBrush Color="{Binding Color}"/>
+                                                    </Rectangle.Fill>
+                                                </Rectangle>
+                                                <TextBlock Text="{Binding Name}"/>
+                                            </StackPanel>
+                                        </DataTemplate>
+                                    </ComboBox.ItemTemplate>
+                                </ComboBox>
+                                <TextBlock Text="Action" Foreground="White" FontSize="20" />
+                                <ComboBox HorizontalAlignment="Stretch" Margin="3" x:Name="HoldAction" SelectionChanged="HoldAction_SelectionChanged"
+                                        DataContext="{Binding SelectedValue, ElementName=ClickCategory}" ItemsSource="{Binding Actions}" IsEnabled="False">
+                                    <ComboBox.ItemTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding Name}"/>
+                                        </DataTemplate>
+                                    </ComboBox.ItemTemplate>
+                                </ComboBox>
+                            </StackPanel>
+
+                            <StackPanel Orientation="Vertical">
+                                <TextBlock Text="Binding sequence:" FontSize="20" Foreground="White"/>
+                                <Button IsEnabled="False" x:Name="BindingParentAsRoot" Content="Previous binding" Background="#A04455BB" HorizontalAlignment="Stretch" Margin="2"/>
+                                <Button IsEnabled="False" x:Name="OpenAsBindingRoot" Content="Open bindings view" Background="#A04488BB" HorizontalAlignment="Stretch" Margin="2"/>
+                                <Button IsEnabled="False" x:Name="ResetBindingRoot" Content="Open bindings root" Background="#A09955BB" HorizontalAlignment="Stretch" Margin="2"/>
+                            </StackPanel>
+                        </StackPanel>
+                    </Grid>
+                </Grid>
             </Border>
         </ui:NavigationView>
     </Grid>

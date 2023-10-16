@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace KeyBindingsEditor
 {
+#pragma warning disable
     /// <summary>
     /// Enumeration for keys.
     /// </summary>

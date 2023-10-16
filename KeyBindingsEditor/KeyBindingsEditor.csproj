@@ -8,13 +8,17 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Assets\" />
-    <Folder Include="Pages\" />
+    <None Remove="Assets\Background.png" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="ModernWpfUI" Version="0.9.6" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+    <PackageReference Include="PixiEditor.ColorPicker" Version="3.4.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Assets\Background.png" />
   </ItemGroup>
 
 </Project>

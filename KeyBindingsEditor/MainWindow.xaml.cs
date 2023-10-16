@@ -1,7 +1,10 @@
 ﻿using KeyBindingsEditor.Configuration;
+using KeyBindingsEditor.ViewModel;
+using ModernWpf.Controls;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -21,184 +24,171 @@ namespace KeyBindingsEditor
     /// </summary>
     public partial class MainWindow : Window
     {
+        private EditorViewModel context;
+        private bool suppressCurrentUpdate;
+
         public MainWindow()
         {
             InitializeComponent();
-            // HACK:
-            var categories = new List<GameplayCategory>()
+            context = EditorViewModel.Instance = (EditorViewModel)DataContext;
+            context.PropertyChanged += Instance_PropertyChanged;
+        }
+
+        private void Instance_PropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == nameof(EditorViewModel.SelectedBinding))
             {
-                new()
+                var selected = context.SelectedBinding;
+                suppressCurrentUpdate = true;
+                if (selected != null)
                 {
-                    Name = "Movement",
-                    Color = Colors.LightBlue,
-                    Actions = new()
-                    {
-                        new() { Name="MoveForward" },
-                        new() { Name = "MoveBackward" },
-                        new() { Name = "MoveRight" },
-                        new() { Name = "MoveLeft" },
-                        new() { Name = "Jump" }
-                    }
-                },
-                new()
-                {
-                    Name = "Fight",
-                    Color = Colors.OrangeRed,
-                    Actions = new()
-                    {
-                        new() { Name = "Hit" },
-                        new() { Name = "ComboHit" },
-                        new() { Name = "Shot" },
-                        new() { Name = "CastSpell" }
-                    }
-                },
-                new()
-                {
-                    Name = "Skills",
-                    Color = Colors.BlueViolet,
-                    Actions = new()
-                    {
-                        new() { Name = "Heal" },
-                        new() { Name = "UseManaPotion" },
-                    }
-                },
-                new()
-                {
-                    Name = "Menus",
-                    Color = Colors.Green,
-                    Actions = new()
-                    {
-                        new() { Name = "OpenPause" },
-                        new() { Name = "OpenInventory" }
-                    }
+                    ClickCategory.SelectedItem = selected.ClickAction?.GetCategory(context.Configuration.CategoryManager);
+                    ClickAction.SelectedItem = selected.ClickAction;
+                    IsClickEnabled.IsChecked = selected.ClickAction != null;
+                    DoubleClickCategory.SelectedItem = selected.DoubleClickAction?.GetCategory(context.Configuration.CategoryManager);
+                    DoubleClickAction.SelectedItem = selected.DoubleClickAction;
+                    IsDoubleClickEnabled.IsChecked = selected.DoubleClickAction != null;
+                    HoldCategory.SelectedItem = selected.HoldAction?.GetCategory(context.Configuration.CategoryManager);
+                    HoldAction.SelectedItem = selected.HoldAction;
+                    IsHoldEnabled.IsChecked = selected.HoldAction != null;
+                    BindingParentAsRoot.IsEnabled = selected.Parent != null;
                 }
-            };
-            var manager = new CategoryManager(categories);
-            InputConfiguration config = new()
+                ResetBindingRoot.IsEnabled = !(OpenAsBindingRoot.IsEnabled = selected != null);
+                suppressCurrentUpdate = false;
+            }
+        }
+
+        private void NavView_SelectionChanged(NavigationView sender, NavigationViewSelectionChangedEventArgs args)
+        {
+            OpenSelectedPage();
+        }
+
+        public void OpenSelectedPage()
+        {
+            context.SelectedBinding = null;
+            switch (NavView.MenuItems.IndexOf(NavView.SelectedItem))
             {
-                Categories = categories,
-                Keyboard = new()
+                // Keyboard
+                case 0:
+                    Properties.Visibility = Visibility.Visible;
+                    CurrentPageFrame.Navigate(new Uri("Pages/KeyboardLayout.xaml", UriKind.Relative));
+                    break;
+                case 1:
+                    Properties.Visibility = Visibility.Visible;
+                    CurrentPageFrame.Navigate(new Uri("Pages/MouseLayout.xaml", UriKind.Relative));
+                    break;
+                case 2:
+                    Properties.Visibility = Visibility.Visible;
+                    CurrentPageFrame.Navigate(new Uri("Pages/GamepadLayout.xaml", UriKind.Relative));
+                    break;
+                case 3:
+                    Properties.Visibility = Visibility.Hidden;
+                    CurrentPageFrame.Navigate(new Uri("Pages/CategoriesEditor.xaml", UriKind.Relative));
+                    break;
+            }
+        }
+
+        private void CreateFile_Click(object sender, RoutedEventArgs e)
+        {
+            
+        }
+
+        private void OpenFile_Click(object sender, RoutedEventArgs e)
+        {
+            if (context.OpenConfiguration())
+            {
+                // Maybe handle it.
+            }
+        }
+
+        private void SaveFile_Click(object sender, RoutedEventArgs e)
+        {
+            if (context.Save())
+            {
+                // Maybe handle it.
+            }
+        }
+
+        private void SaveFileAs_Click(object sender, RoutedEventArgs e)
+        {
+            if (context.SaveAs())
+            {
+                // Maybe handle it.
+            }
+        }
+
+        private void ClickAction_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (context.SelectedBinding != null && !suppressCurrentUpdate)
+            {
+                context.SelectedBinding.ClickAction = (ActionInfo)ClickAction.SelectedItem;
+            }
+        }
+
+        private void ClickCategory_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+        }
+
+        private void IsClickEnabled_Checked(object sender, RoutedEventArgs e)
+        {
+            ClickAction.IsEnabled = ClickCategory.IsEnabled = IsClickEnabled.IsChecked == true;
+            if (context.SelectedBinding != null && !suppressCurrentUpdate)
+            {
+                if (IsClickEnabled.IsChecked == false)
                 {
-                    Bindings = new()
-                    {
-                        new KeyBinding<Keys>()
-                        {
-                           Key = Keys.W,
-                           ClickAction = manager.GetAction("Movement", "MoveForward")
-                        },
-                        new KeyBinding<Keys>()
-                        {
-                            Key = Keys.A,
-                            ClickAction = manager.GetAction("Movement", "MoveLeft")
-                        },
-                        new KeyBinding<Keys>()
-                        {
-                           Key = Keys.S,
-                           ClickAction = manager.GetAction("Movement", "MoveForward")
-                        },
-                        new KeyBinding<Keys>()
-                        {
-                            Key = Keys.D,
-                            ClickAction = manager.GetAction("Movement", "MoveRight")
-                        },
-                        new KeyBinding<Keys>()
-                        {
-                           Key = Keys.Space,
-                           ClickAction = manager.GetAction("Movement", "Jump")
-                        },
-                        new KeyBinding<Keys>()
-                        {
-                            Key = Keys.F,
-                            ClickAction = manager.GetAction("Skills", "Heal")
-                        },
-                        new KeyBinding<Keys>()
-                        {
-                            Key = Keys.G,
-                            ClickAction = manager.GetAction("Skills", "UseManaPotion")
-                        },
-                        new KeyBinding<Keys>()
-                        {
-                            Key = Keys.E,
-                            ClickAction = manager.GetAction("Menus", "OpenPause")
-                        },
-                        new KeyBinding<Keys>()
-                        {
-                            Key = Keys.Escape,
-                            ClickAction = manager.GetAction("Menus", "OpenInventory")
-                        },
-                    }
-                },
-                Mouse = new()
-                {
-                    Bindings = new()
-                    {
-                        new KeyBinding<MouseButtons>() 
-                        {
-                            Key = MouseButtons.Left,
-                            ClickAction = manager.GetAction("Fight", "Hit"),
-                            HoldAction = manager.GetAction("Fight", "Shot"),
-                            NClickActions = new()
-                            {
-                                default,
-                                default,
-                                manager.GetAction("Fight", "ComboHit")
-                            },
-                        },
-                        new KeyBinding<MouseButtons>()
-                        {
-                            Key = MouseButtons.Right,
-                            ClickAction = manager.GetAction("Fight", "CastSpell")
-                        }
-                    }
-                },
-                Gamepad = new()
-                {
-                    Bindings = new()
-                    {
-                        new KeyBinding<GamepadButtons>()
-                        {
-                            Key = GamepadButtons.PadUp,
-                            ClickAction = manager.GetAction("Movement", "MoveForward")
-                        },
-                        new KeyBinding<GamepadButtons>()
-                        {
-                            Key = GamepadButtons.PadDown,
-                            ClickAction = manager.GetAction("Movement", "MoveBackward")
-                        },
-                        new KeyBinding<GamepadButtons>()
-                        {
-                            Key = GamepadButtons.PadLeft,
-                            ClickAction = manager.GetAction("Movement", "MoveLeft")
-                        },
-                        new KeyBinding<GamepadButtons>()
-                        {
-                            Key = GamepadButtons.PadRight,
-                            ClickAction = manager.GetAction("Movement", "MoveRight")
-                        },
-                        new KeyBinding<GamepadButtons>()
-                        {
-                            Key = GamepadButtons.RightShoulder,
-                            ClickAction = manager.GetAction("Fight", "Hit")
-                        },
-                        new KeyBinding<GamepadButtons>()
-                        {
-                            Key = GamepadButtons.LeftShoulder,
-                            ClickAction = manager.GetAction("Fight", "CastSpell")
-                        },
-                        new KeyBinding<GamepadButtons>()
-                        {
-                            Key = GamepadButtons.Start,
-                            ClickAction = manager.GetAction("Menus", "OpenPause")
-                        },
-                        new KeyBinding<GamepadButtons>()
-                        {
-                            Key = GamepadButtons.A,
-                            ClickAction = manager.GetAction("Menus", "OpenInventory")
-                        },
-                    }
+                    context.SelectedBinding.ClickAction = null;
                 }
-            };
-            System.IO.File.WriteAllText("TestBindings.json", JsonConvert.SerializeObject(config, Formatting.Indented));
+            }
+        }
+
+        private void DoubleClickAction_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (context.SelectedBinding != null && !suppressCurrentUpdate)
+            {
+                context.SelectedBinding.DoubleClickAction = (ActionInfo)DoubleClickAction.SelectedItem;
+            }
+        }
+
+        private void DoubleClickCategory_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
+        }
+
+        private void IsDoubleClickEnabled_Checked(object sender, RoutedEventArgs e)
+        {
+            DoubleClickAction.IsEnabled = DoubleClickCategory.IsEnabled = IsDoubleClickEnabled.IsChecked == true;
+            if (context.SelectedBinding != null && !suppressCurrentUpdate)
+            {
+                if (IsDoubleClickEnabled.IsChecked == false)
+                {
+                    context.SelectedBinding.ClickAction = null;
+                }
+            }
+        }
+
+        private void IsHoldEnabled_Checked(object sender, RoutedEventArgs e)
+        {
+            HoldAction.IsEnabled = HoldCategory.IsEnabled = IsHoldEnabled.IsChecked == true;
+            if (context.SelectedBinding != null && !suppressCurrentUpdate)
+            {
+                if (IsHoldEnabled.IsChecked == false)
+                {
+                    context.SelectedBinding.HoldAction = null;
+                }
+            }
+        }
+
+        private void HoldCategory_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
+        }
+
+        private void HoldAction_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (context.SelectedBinding != null && !suppressCurrentUpdate)
+            {
+                context.SelectedBinding.HoldAction = (ActionInfo)HoldAction.SelectedItem;
+            }
         }
     }
 }
