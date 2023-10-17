@@ -125,7 +125,7 @@
                                 </ComboBox>
                                 <TextBlock Text="Action" Foreground="White" FontSize="20" />
                                 <ComboBox HorizontalAlignment="Stretch" Margin="3" x:Name="DoubleClickAction" SelectionChanged="DoubleClickAction_SelectionChanged"
-                                        DataContext="{Binding SelectedValue, ElementName=ClickCategory}" ItemsSource="{Binding Actions}" IsEnabled="False">
+                                        DataContext="{Binding SelectedValue, ElementName=DoubleClickCategory}" ItemsSource="{Binding Actions}" IsEnabled="False">
                                     <ComboBox.ItemTemplate>
                                         <DataTemplate>
                                             <TextBlock Text="{Binding Name}"/>
@@ -159,7 +159,7 @@
                                 </ComboBox>
                                 <TextBlock Text="Action" Foreground="White" FontSize="20" />
                                 <ComboBox HorizontalAlignment="Stretch" Margin="3" x:Name="HoldAction" SelectionChanged="HoldAction_SelectionChanged"
-                                        DataContext="{Binding SelectedValue, ElementName=ClickCategory}" ItemsSource="{Binding Actions}" IsEnabled="False">
+                                        DataContext="{Binding SelectedValue, ElementName=HoldCategory}" ItemsSource="{Binding Actions}" IsEnabled="False">
                                     <ComboBox.ItemTemplate>
                                         <DataTemplate>
                                             <TextBlock Text="{Binding Name}"/>

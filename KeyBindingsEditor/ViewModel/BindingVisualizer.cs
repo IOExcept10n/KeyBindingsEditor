@@ -1,4 +1,5 @@
 ﻿using KeyBindingsEditor.Configuration;
+using KeyBindingsEditor.Utils;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,23 +13,29 @@ namespace KeyBindingsEditor.ViewModel
 {
     internal class BindingVisualizer
     {
-        public void ApplyButtonLayout<T>(Button target, KeyBinding<T> binding, CategoryManager categories)
+        public void ApplyButtonLayout<T>(Button target, string text, KeyBinding<T> binding, CategoryManager categories)
         {
-            var backgroundBrush = new SolidColorBrush(Color.FromArgb(0x88, 50, 50, 50));
+            Color background = Color.FromArgb(0x88, 50, 50, 50);
             if (binding.ClickAction != null)
             {
                 var category = binding.ClickAction.GetCategory(categories);
                 if (category != null)
                 {
-                    backgroundBrush = new SolidColorBrush(category.Color);
+                    background = category.Color;
                 }
             }
-            target.Background = backgroundBrush;
+            target.Background = new SolidColorBrush(background);
             target.ClipToBounds = false;
             Grid grid = new()
             {
                 ClipToBounds = false
             };
+            grid.Children.Add(new TextBlock()
+            {
+                Text = text,
+                //FontSize = 20,
+                Foreground = new SolidColorBrush(background.GetContrast())
+            });
             if (binding.DoubleClickAction != null)
             {
                 var category = binding.DoubleClickAction.GetCategory(categories);
@@ -78,17 +85,18 @@ namespace KeyBindingsEditor.ViewModel
             target.Content = grid;
         }
 
-        public void VisualizeLayout<T>(Dictionary<T, Button> buttons, InputSourceConfigurationBase<T> layout, CategoryManager categories) where T : notnull
+        public void VisualizeLayout<T>(Dictionary<T, (Button Button, string Text)> buttons, EditorViewModel editor, CategoryManager categories) where T : notnull
         {
             foreach (var button in buttons)
             {
-                button.Value.Background = new SolidColorBrush(Color.FromArgb(0x88, 50, 50, 50));
+                button.Value.Button.Background = new SolidColorBrush(Color.FromArgb(0x88, 50, 50, 50));
             }
-            foreach (var binding in layout.Bindings)
+            foreach (var binding in editor.BindingsContext)
             {
-                if (buttons.TryGetValue(binding.Key, out var button))
+                var keyBinding = binding as KeyBinding<T>;
+                if (keyBinding != null && buttons.TryGetValue(keyBinding.Key, out var button))
                 {
-                    ApplyButtonLayout(button, binding, categories);
+                    ApplyButtonLayout(button.Button, button.Text, keyBinding, categories);
                 }
             }
         }

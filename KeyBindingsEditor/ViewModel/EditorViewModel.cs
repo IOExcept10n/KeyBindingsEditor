@@ -18,6 +18,7 @@ namespace KeyBindingsEditor.ViewModel
         private bool hasUnsavedChanges;
         private IKeyBinding? selectedBinding;
         private InputConfiguration configuration = new();
+        private IEnumerable<IKeyBinding> bindingsContext;
 
         public static EditorViewModel Instance { get; set; }
 
@@ -42,6 +43,16 @@ namespace KeyBindingsEditor.ViewModel
             {
                 selectedBinding = value;
                 OnPropertyChanged(nameof(SelectedBinding));
+            }
+        }
+
+        public IEnumerable<IKeyBinding> BindingsContext
+        {
+            get => bindingsContext;
+            set
+            {
+                bindingsContext = value;
+                OnPropertyChanged(nameof(BindingsContext));
             }
         }
 
