@@ -47,7 +47,7 @@
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="40"/>
-                        <RowDefinition Height="450"/>
+                        <RowDefinition Height="430"/>
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="*"/>
                     </Grid.RowDefinitions>
@@ -168,11 +168,16 @@
                                 </ComboBox>
                             </StackPanel>
 
-                            <StackPanel Orientation="Vertical">
-                                <TextBlock Text="Binding sequence:" FontSize="20" Foreground="White"/>
-                                <Button IsEnabled="False" x:Name="BindingParentAsRoot" Content="Previous binding" Background="#A04455BB" HorizontalAlignment="Stretch" Margin="2"/>
-                                <Button IsEnabled="False" x:Name="OpenAsBindingRoot" Content="Open bindings view" Background="#A04488BB" HorizontalAlignment="Stretch" Margin="2"/>
-                                <Button IsEnabled="False" x:Name="ResetBindingRoot" Content="Open bindings root" Background="#A09955BB" HorizontalAlignment="Stretch" Margin="2"/>
+                            <StackPanel Orientation="Vertical" DataContext="{StaticResource Editor}">
+                                <TextBlock Text="Binding sequence:" FontSize="20" Foreground="White" Margin="4"/>
+                                <Button IsEnabled="True" x:Name="Sequence1" Content="{Binding SequenceFirst.Key}" Click="Sequence1_Click"
+                                        Background="#A04455BB" HorizontalAlignment="Stretch" Margin="2" Height="30"/>
+                                <TextBlock Text="+" HorizontalAlignment="Center" Foreground="White"/>
+                                <Button IsEnabled="False" x:Name="Sequence2" Content="{Binding SequenceSecond.Key}" Click="Sequence2_Click"
+                                        Background="#A04488BB" HorizontalAlignment="Stretch" Margin="2" Height="30"/>
+                                <TextBlock Text="+" HorizontalAlignment="Center" Foreground="White"/>
+                                <Button IsEnabled="False" x:Name="Sequence3" Content="{Binding SequenceThird.Key}" Click="Sequence3_Click"
+                                        Background="#A09955BB" HorizontalAlignment="Stretch" Margin="2" Height="30"/>
                             </StackPanel>
                         </StackPanel>
                     </Grid>

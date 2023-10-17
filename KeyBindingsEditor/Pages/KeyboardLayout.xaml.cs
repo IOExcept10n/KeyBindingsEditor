@@ -1,4 +1,5 @@
-﻿using KeyBindingsEditor.ViewModel;
+﻿using KeyBindingsEditor.Configuration;
+using KeyBindingsEditor.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,8 +22,7 @@ namespace KeyBindingsEditor.Pages
     /// </summary>
     public partial class KeyboardLayout : Page
     {
-        BindingVisualizer visualizer = new();
-        Dictionary<Keys, (Button Button, string Text)> buttons;
+        private readonly Dictionary<Keys, (Button Button, string Text)> buttons;
 
         public KeyboardLayout()
         {
@@ -111,8 +111,8 @@ namespace KeyBindingsEditor.Pages
                 [Keys.Space] = (Space_key, "Space"),
                 [Keys.CapsLock] = (CapsLock_key, "CapsLk"),
                 [Keys.Enter] = (Enter_key, "Enter"),
-                [Keys.LeftShift] = (LeftShift_key, "SHIFT"),
-                [Keys.RightShift] = (RightShift_key, "SHIFT"),
+                [Keys.LeftShift] = (LeftShift_key, "Shift"),
+                [Keys.RightShift] = (RightShift_key, "Shift"),
                 [Keys.LeftCtrl] = (LeftControl_key, "CTRL"),
                 [Keys.RightCtrl] = (RightControl_key, "CTRL"),
                 [Keys.LeftAlt] = (LeftAlt_key, "ALT"),
@@ -141,7 +141,13 @@ namespace KeyBindingsEditor.Pages
 
         private void ViewModel_PropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
+            if (EditorViewModel.Instance.CurrentEditorType != EditorInputType.Keyboard)
+                return;
             if (e.PropertyName == nameof(EditorViewModel.Configuration))
+            {
+                EditorViewModel.Instance.BindingsContext = EditorViewModel.Instance.Configuration.Keyboard.Bindings;
+            }
+            if (e.PropertyName == nameof(EditorViewModel.Configuration) || e.PropertyName == nameof(EditorViewModel.BindingsContext))
             {
                 ReloadLayout();
             }
@@ -154,7 +160,7 @@ namespace KeyBindingsEditor.Pages
 
         private void ReloadLayout()
         {
-            visualizer.VisualizeLayout(buttons, EditorViewModel.Instance, EditorViewModel.Instance.Configuration.CategoryManager);
+            BindingVisualizer.VisualizeLayout(buttons, EditorViewModel.Instance);
         }
 
         public void Key_Click(object sender, RoutedEventArgs e)
@@ -163,17 +169,17 @@ namespace KeyBindingsEditor.Pages
             var instance = EditorViewModel.Instance;
             var pair = buttons.First(x => x.Value.Button == bindingButton);
             var key = pair.Key;
-            var bindings = instance.Configuration.Keyboard.Bindings;
+            var bindings = (ICollection<KeyBinding<Keys>>)instance.BindingsContext;
             var binding = bindings.FirstOrDefault(x => x.Key == key);
             if (binding == null)
             {
-                binding = new Configuration.KeyBinding<Keys>() { Key = key };
+                binding = new KeyBinding<Keys>() { Key = key, Parent = EditorViewModel.Instance.CombinationSource as KeyBinding<Keys> };
                 bindings.Add(binding);
             }
             instance.SelectedBinding = binding;
             binding.PropertyChanged += (s, e) =>
             {
-                visualizer.ApplyButtonLayout(bindingButton, pair.Value.Text, binding, EditorViewModel.Instance.Configuration.CategoryManager);
+                BindingVisualizer.ApplyButtonLayout(bindingButton, pair.Value.Text, binding, EditorViewModel.Instance);
             };
         }
     }

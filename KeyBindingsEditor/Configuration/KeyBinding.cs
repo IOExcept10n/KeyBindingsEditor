@@ -67,7 +67,7 @@ namespace KeyBindingsEditor.Configuration
                 ThrowIfNotActivated();
                 return doubleClickAction;
             }
-            set 
+            set
             {
                 doubleClickAction = value;
                 OnPropertyChanged(nameof(DoubleClickAction));
@@ -122,6 +122,23 @@ namespace KeyBindingsEditor.Configuration
 
 
         public event PropertyChangedEventHandler? PropertyChanged;
+
+        public bool AnyParents(Func<KeyBinding<TKeyType>, bool> predicate)
+        {
+            var test = this;
+            do
+            {
+                if (!predicate(test))
+                    return false;
+                test = test.Parent;
+            } while (test != null);
+            return true;
+        }
+
+        public override string ToString()
+        {
+            return $"{Key}: [Click:{ClickAction}, DoubleClick:{DoubleClickAction}, Hold:{HoldAction}], Next: {SequenceNextBindings.Count}";
+        }
 
         internal void Activate(CategoryManager categories)
         {

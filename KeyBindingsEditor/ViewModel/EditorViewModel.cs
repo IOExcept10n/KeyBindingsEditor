@@ -12,13 +12,26 @@ using System.Windows;
 
 namespace KeyBindingsEditor.ViewModel
 {
+    public enum EditorInputType
+    {
+        None,
+        Keyboard,
+        Mouse,
+        Gamepad
+    }
+
     internal class EditorViewModel : INotifyPropertyChanged
     {
         private string? filePath;
         private bool hasUnsavedChanges;
         private IKeyBinding? selectedBinding;
         private InputConfiguration configuration = new();
-        private IEnumerable<IKeyBinding> bindingsContext;
+        private IEnumerable<IKeyBinding>? bindingsContext;
+        private EditorInputType currentEditorType;
+        private IKeyBinding? combinationSource;
+        private IKeyBinding? sequenceThird;
+        private IKeyBinding? sequenceFirst;
+        private IKeyBinding? sequenceSecond;
 
         public static EditorViewModel Instance { get; set; }
 
@@ -46,7 +59,69 @@ namespace KeyBindingsEditor.ViewModel
             }
         }
 
-        public IEnumerable<IKeyBinding> BindingsContext
+        public IKeyBinding? SequenceFirst
+        {
+            get => sequenceFirst;
+            set
+            {
+                sequenceFirst = value;
+                OnPropertyChanged(nameof(SequenceFirst));
+            }
+        }
+
+        public IKeyBinding? SequenceSecond
+        {
+            get => sequenceSecond;
+            set
+            {
+                sequenceSecond = value;
+                OnPropertyChanged(nameof(SequenceSecond));
+            }
+        }
+
+        public IKeyBinding? SequenceThird
+        {
+            get => sequenceThird;
+            set
+            {
+                sequenceThird = value;
+                OnPropertyChanged(nameof(SequenceThird));
+            }
+        }
+
+        public IKeyBinding? CombinationSource
+        {
+            get => combinationSource;
+            set
+            {
+                combinationSource = value;
+                if (combinationSource != null)
+                {
+                    BindingsContext = combinationSource.NextBindings;
+                }
+                else
+                {
+                    switch (currentEditorType)
+                    {
+                        case EditorInputType.Keyboard:
+                            BindingsContext = Configuration.Keyboard.Bindings;
+                            break;
+                        case EditorInputType.Mouse:
+                            BindingsContext = Configuration.Mouse.Bindings;
+                            break;
+                        case EditorInputType.Gamepad:
+                            BindingsContext = Configuration.Gamepad.Bindings;
+                            break;
+                        default:
+                            BindingsContext = null;
+                            break;
+                    }
+                }
+                OnPropertyChanged(nameof(CombinationSource));
+            }
+        }
+
+        public IEnumerable<IKeyBinding>? BindingsContext
         {
             get => bindingsContext;
             set
@@ -80,7 +155,24 @@ namespace KeyBindingsEditor.ViewModel
             }
         }
 
+        public EditorInputType CurrentEditorType
+        {
+            get => currentEditorType;
+            set
+            {
+                currentEditorType = value;
+                OnPropertyChanged(nameof(CurrentEditorType));
+            }
+        }
+
         public event PropertyChangedEventHandler? PropertyChanged;
+
+        public bool CurrentCombinationContains<T>(T keys)
+        {
+            return (SequenceFirst as KeyBinding<T>)?.Key?.Equals(keys) == true || 
+                   (SequenceSecond as KeyBinding<T>)?.Key?.Equals(keys) == true ||
+                   (SequenceThird as KeyBinding<T>)?.Key?.Equals(keys) == true;
+        }
 
         /// <summary>
         /// Opens the input configuration file.
