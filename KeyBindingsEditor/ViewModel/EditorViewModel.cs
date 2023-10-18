@@ -226,7 +226,7 @@ namespace KeyBindingsEditor.ViewModel
             };
             if (dialog.ShowDialog() == true)
             {
-                File.WriteAllText(dialog.FileName, JsonConvert.SerializeObject(Configuration.Categories));
+                File.WriteAllText(dialog.FileName, JsonConvert.SerializeObject(Configuration.Categories, Formatting.Indented));
                 return true;
             }
             else return false;
