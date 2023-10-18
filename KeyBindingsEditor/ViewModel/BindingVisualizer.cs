@@ -35,7 +35,7 @@ namespace KeyBindingsEditor.ViewModel
                 Width = target.Width, 
                 Height = target.Height
             };
-            Color foreground = binding.ClickAction == null ? Colors.White : background.GetContrast();
+            Color foreground = binding.ClickAction == null ? Colors.White : background.GetContrast(60);
             grid.Children.Add(new TextBlock()
             {
                 Text = text,

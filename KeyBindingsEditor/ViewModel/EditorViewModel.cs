@@ -25,7 +25,7 @@ namespace KeyBindingsEditor.ViewModel
         private string? filePath;
         private bool hasUnsavedChanges;
         private IKeyBinding? selectedBinding;
-        private InputConfiguration configuration = new();
+        private InputConfiguration configuration;
         private IEnumerable<IKeyBinding>? bindingsContext;
         private EditorInputType currentEditorType;
         private IKeyBinding? combinationSource;
@@ -167,11 +167,26 @@ namespace KeyBindingsEditor.ViewModel
 
         public event PropertyChangedEventHandler? PropertyChanged;
 
+        public EditorViewModel()
+        {
+            CreateConfiguration();
+        }
+
         public bool CurrentCombinationContains<T>(T keys)
         {
             return (SequenceFirst as KeyBinding<T>)?.Key?.Equals(keys) == true || 
                    (SequenceSecond as KeyBinding<T>)?.Key?.Equals(keys) == true ||
                    (SequenceThird as KeyBinding<T>)?.Key?.Equals(keys) == true;
+        }
+
+        public bool CreateConfiguration()
+        {
+            if (SaveIfUnsaved())
+            {
+                Configuration = new();
+                return true;
+            }
+            return false;
         }
 
         /// <summary>
