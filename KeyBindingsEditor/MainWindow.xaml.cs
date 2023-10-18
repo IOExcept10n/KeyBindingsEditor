@@ -33,7 +33,13 @@ namespace KeyBindingsEditor
             InitializeComponent();
             context = EditorViewModel.Instance = (EditorViewModel)DataContext;
             context.PropertyChanged += Instance_PropertyChanged;
+            Closing += MainWindow_Closing;
             UpdateBindingState();
+        }
+
+        private void MainWindow_Closing(object? sender, System.ComponentModel.CancelEventArgs e)
+        {
+            e.Cancel = !context.SaveIfUnsaved();
         }
 
         private void Instance_PropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e)
@@ -123,7 +129,10 @@ namespace KeyBindingsEditor
 
         private void CreateFile_Click(object sender, RoutedEventArgs e)
         {
-            
+            if (context.CreateConfiguration())
+            {
+                // Maybe handle it.
+            }
         }
 
         private void OpenFile_Click(object sender, RoutedEventArgs e)
