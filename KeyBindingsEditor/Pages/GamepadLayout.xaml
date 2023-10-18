@@ -8,7 +8,7 @@
       d:DesignHeight="450" d:DesignWidth="800"
       Title="GamepadLayout">
 
-    <Grid>
+    <Grid Background="{StaticResource Gamepad}" Height="400" Width="400">
         
     </Grid>
 </Page>
