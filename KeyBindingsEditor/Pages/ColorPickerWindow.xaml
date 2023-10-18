@@ -19,15 +19,15 @@
     </Window.Resources>
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
-        <colorpicker:StandardColorPicker x:Name="Picker" Style="{StaticResource DefaultColorPickerStyle}" Grid.ColumnSpan="2"/>
-        <Button Grid.Row="1" Grid.Column="1" Content="Select" Margin="4" HorizontalAlignment="Stretch" Background="#40AA40" Click="Select_Click"/>
-        <Button Grid.Row="1" Grid.Column="0" Content="Cancel" Margin="4" HorizontalAlignment="Stretch" Background="#707070" Click="Cancel_Click"/>
+        <colorpicker:StandardColorPicker x:Name="Picker" Style="{StaticResource DefaultColorPickerStyle}" Grid.ColumnSpan="2" />
+        <Button Grid.Row="1" Grid.Column="1" Content="Select" Margin="4" HorizontalAlignment="Stretch" Background="#40AA40" Click="Select_Click" />
+        <Button Grid.Row="1" Grid.Column="0" Content="Cancel" Margin="4" HorizontalAlignment="Stretch" Background="#707070" Click="Cancel_Click" />
     </Grid>
 </Window>

@@ -1,136 +1,136 @@
 ﻿<Page x:Class="KeyBindingsEditor.Pages.KeyboardLayout"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
       xmlns:local="clr-namespace:KeyBindingsEditor.Pages"
-      mc:Ignorable="d" 
+      mc:Ignorable="d"
       d:DesignHeight="450" d:DesignWidth="1400"
       Title="KeyboardLayout">
 
     <Grid Height="400" Width="1400">
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="Auto"/>
-            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="Auto" />
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="*"/>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
         </Grid.RowDefinitions>
         <StackPanel Grid.Row="0" Orientation="Horizontal">
             <Button Content="Esc" VerticalAlignment="Center" x:Name="Escape_key" Width="50" Height="50" Margin="5 5 55 5" Padding="0" Click="Key_Click">
                 <Button.Resources>
                     <Style TargetType="Border">
-                        <Setter Property="CornerRadius" Value="4"/>
+                        <Setter Property="CornerRadius" Value="4" />
                     </Style>
                 </Button.Resources>
             </Button>
             <Button Content="F1" VerticalAlignment="Center" x:Name="F1_key" Width="50" Height="50" Margin="5" Padding="0" Click="Key_Click">
                 <Button.Resources>
                     <Style TargetType="Border">
-                        <Setter Property="CornerRadius" Value="4"/>
+                        <Setter Property="CornerRadius" Value="4" />
                     </Style>
                 </Button.Resources>
             </Button>
             <Button Content="F2" VerticalAlignment="Center" x:Name="F2_key" Width="50" Height="50" Margin="5" Padding="0" Click="Key_Click">
                 <Button.Resources>
                     <Style TargetType="Border">
-                        <Setter Property="CornerRadius" Value="4"/>
+                        <Setter Property="CornerRadius" Value="4" />
                     </Style>
                 </Button.Resources>
             </Button>
             <Button Content="F3" VerticalAlignment="Center" x:Name="F3_key" Width="50" Height="50" Margin="5" Padding="0" Click="Key_Click">
                 <Button.Resources>
                     <Style TargetType="Border">
-                        <Setter Property="CornerRadius" Value="4"/>
+                        <Setter Property="CornerRadius" Value="4" />
                     </Style>
                 </Button.Resources>
             </Button>
             <Button Content="F4" VerticalAlignment="Center" x:Name="F4_key" Width="50" Height="50" Margin="5 5 40 5" Padding="0" Click="Key_Click">
                 <Button.Resources>
                     <Style TargetType="Border">
-                        <Setter Property="CornerRadius" Value="4"/>
+                        <Setter Property="CornerRadius" Value="4" />
                     </Style>
                 </Button.Resources>
             </Button>
             <Button Content="F5" VerticalAlignment="Center" x:Name="F5_key" Width="50" Height="50" Margin="5" Padding="0" Click="Key_Click">
                 <Button.Resources>
                     <Style TargetType="Border">
-                        <Setter Property="CornerRadius" Value="4"/>
+                        <Setter Property="CornerRadius" Value="4" />
                     </Style>
                 </Button.Resources>
             </Button>
             <Button Content="F6" VerticalAlignment="Center" x:Name="F6_key" Width="50" Height="50" Margin="5" Padding="0" Click="Key_Click">
                 <Button.Resources>
                     <Style TargetType="Border">
-                        <Setter Property="CornerRadius" Value="4"/>
+                        <Setter Property="CornerRadius" Value="4" />
                     </Style>
                 </Button.Resources>
             </Button>
             <Button Content="F7" VerticalAlignment="Center" x:Name="F7_key" Width="50" Height="50" Margin="5" Padding="0" Click="Key_Click">
                 <Button.Resources>
                     <Style TargetType="Border">
-                        <Setter Property="CornerRadius" Value="4"/>
+                        <Setter Property="CornerRadius" Value="4" />
                     </Style>
                 </Button.Resources>
             </Button>
             <Button Content="F8" VerticalAlignment="Center" x:Name="F8_key" Width="50" Height="50" Margin="5 5 40 5" Padding="0" Click="Key_Click">
                 <Button.Resources>
                     <Style TargetType="Border">
-                        <Setter Property="CornerRadius" Value="4"/>
+                        <Setter Property="CornerRadius" Value="4" />
                     </Style>
                 </Button.Resources>
             </Button>
             <Button Content="F9" VerticalAlignment="Center" x:Name="F9_key" Width="50" Height="50" Margin="5" Padding="0" Click="Key_Click">
                 <Button.Resources>
                     <Style TargetType="Border">
-                        <Setter Property="CornerRadius" Value="4"/>
+                        <Setter Property="CornerRadius" Value="4" />
                     </Style>
                 </Button.Resources>
             </Button>
             <Button Content="F10" VerticalAlignment="Center" x:Name="F10_key" Width="50" Height="50" Margin="5" Padding="0" Click="Key_Click">
                 <Button.Resources>
                     <Style TargetType="Border">
-                        <Setter Property="CornerRadius" Value="4"/>
+                        <Setter Property="CornerRadius" Value="4" />
                     </Style>
                 </Button.Resources>
             </Button>
             <Button Content="F11" VerticalAlignment="Center" x:Name="F11_key" Width="50" Height="50" Margin="5" Padding="0" Click="Key_Click">
                 <Button.Resources>
                     <Style TargetType="Border">
-                        <Setter Property="CornerRadius" Value="4"/>
+                        <Setter Property="CornerRadius" Value="4" />
                     </Style>
                 </Button.Resources>
             </Button>
             <Button Content="F12" VerticalAlignment="Center" x:Name="F12_key" Width="50" Height="50" Margin="5 5 30 5" Padding="0" Click="Key_Click">
                 <Button.Resources>
                     <Style TargetType="Border">
-                        <Setter Property="CornerRadius" Value="4"/>
+                        <Setter Property="CornerRadius" Value="4" />
                     </Style>
                 </Button.Resources>
             </Button>
             <Button Content="PrSc" VerticalAlignment="Center" x:Name="PrintScreen_key" Width="60" Height="50" Margin="5" Padding="0" Click="Key_Click">
                 <Button.Resources>
                     <Style TargetType="Border">
-                        <Setter Property="CornerRadius" Value="4"/>
+                        <Setter Property="CornerRadius" Value="4" />
                     </Style>
                 </Button.Resources>
             </Button>
             <Button Content="ScLk" VerticalAlignment="Center" x:Name="ScrollLock_key" Width="60" Height="50" Margin="5" Padding="0" Click="Key_Click">
                 <Button.Resources>
                     <Style TargetType="Border">
-                        <Setter Property="CornerRadius" Value="4"/>
+                        <Setter Property="CornerRadius" Value="4" />
                     </Style>
                 </Button.Resources>
             </Button>
             <Button Content="Pause" VerticalAlignment="Center" x:Name="Pause_key" Width="60" Height="50" Margin="5" Padding="0" Click="Key_Click">
                 <Button.Resources>
                     <Style TargetType="Border">
-                        <Setter Property="CornerRadius" Value="4"/>
+                        <Setter Property="CornerRadius" Value="4" />
                     </Style>
                 </Button.Resources>
             </Button>
@@ -139,140 +139,140 @@
             <Button Content="`" VerticalAlignment="Center" x:Name="Tilde_key" Width="50" Height="50" Margin="5" Padding="0" Click="Key_Click">
                 <Button.Resources>
                     <Style TargetType="Border">
-                        <Setter Property="CornerRadius" Value="4"/>
+                        <Setter Property="CornerRadius" Value="4" />
                     </Style>
                 </Button.Resources>
             </Button>
             <Button Content="1" VerticalAlignment="Center" x:Name="D1_key" Width="50" Height="50" Margin="5" Padding="0" Click="Key_Click">
                 <Button.Resources>
                     <Style TargetType="Border">
-                        <Setter Property="CornerRadius" Value="4"/>
+                        <Setter Property="CornerRadius" Value="4" />
                     </Style>
                 </Button.Resources>
             </Button>
             <Button Content="2" VerticalAlignment="Center" x:Name="D2_key" Width="50" Height="50" Margin="5" Padding="0" Click="Key_Click">
                 <Button.Resources>
                     <Style TargetType="Border">
-                        <Setter Property="CornerRadius" Value="4"/>
+                        <Setter Property="CornerRadius" Value="4" />
                     </Style>
                 </Button.Resources>
             </Button>
             <Button Content="3" VerticalAlignment="Center" x:Name="D3_key" Width="50" Height="50" Margin="5" Padding="0" Click="Key_Click">
                 <Button.Resources>
                     <Style TargetType="Border">
-                        <Setter Property="CornerRadius" Value="4"/>
+                        <Setter Property="CornerRadius" Value="4" />
                     </Style>
                 </Button.Resources>
             </Button>
             <Button Content="4" VerticalAlignment="Center" x:Name="D4_key" Width="50" Height="50" Margin="5" Padding="0" Click="Key_Click">
                 <Button.Resources>
                     <Style TargetType="Border">
-                        <Setter Property="CornerRadius" Value="4"/>
+                        <Setter Property="CornerRadius" Value="4" />
                     </Style>
                 </Button.Resources>
             </Button>
             <Button Content="5" VerticalAlignment="Center" x:Name="D5_key" Width="50" Height="50" Margin="5" Padding="0" Click="Key_Click">
                 <Button.Resources>
                     <Style TargetType="Border">
-                        <Setter Property="CornerRadius" Value="4"/>
+                        <Setter Property="CornerRadius" Value="4" />
                     </Style>
                 </Button.Resources>
             </Button>
             <Button Content="6" VerticalAlignment="Center" x:Name="D6_key" Width="50" Height="50" Margin="5" Padding="0" Click="Key_Click">
                 <Button.Resources>
                     <Style TargetType="Border">
-                        <Setter Property="CornerRadius" Value="4"/>
+                        <Setter Property="CornerRadius" Value="4" />
                     </Style>
                 </Button.Resources>
             </Button>
             <Button Content="7" VerticalAlignment="Center" x:Name="D7_key" Width="50" Height="50" Margin="5" Padding="0" Click="Key_Click">
                 <Button.Resources>
                     <Style TargetType="Border">
-                        <Setter Property="CornerRadius" Value="4"/>
+                        <Setter Property="CornerRadius" Value="4" />
                     </Style>
                 </Button.Resources>
             </Button>
             <Button Content="8" VerticalAlignment="Center" x:Name="D8_key" Width="50" Height="50" Margin="5" Padding="0" Click="Key_Click">
                 <Button.Resources>
                     <Style TargetType="Border">
-                        <Setter Property="CornerRadius" Value="4"/>
+                        <Setter Property="CornerRadius" Value="4" />
                     </Style>
                 </Button.Resources>
             </Button>
             <Button Content="9" VerticalAlignment="Center" x:Name="D9_key" Width="50" Height="50" Margin="5" Padding="0" Click="Key_Click">
                 <Button.Resources>
                     <Style TargetType="Border">
-                        <Setter Property="CornerRadius" Value="4"/>
+                        <Setter Property="CornerRadius" Value="4" />
                     </Style>
                 </Button.Resources>
             </Button>
             <Button Content="0" VerticalAlignment="Center" x:Name="D0_key" Width="50" Height="50" Margin="5" Padding="0" Click="Key_Click">
                 <Button.Resources>
                     <Style TargetType="Border">
-                        <Setter Property="CornerRadius" Value="4"/>
+                        <Setter Property="CornerRadius" Value="4" />
                     </Style>
                 </Button.Resources>
             </Button>
             <Button Content="-" VerticalAlignment="Center" x:Name="Minus_key" Width="50" Height="50" Margin="5" Padding="0" Click="Key_Click">
                 <Button.Resources>
                     <Style TargetType="Border">
-                        <Setter Property="CornerRadius" Value="4"/>
+                        <Setter Property="CornerRadius" Value="4" />
                     </Style>
                 </Button.Resources>
             </Button>
             <Button Content="+" VerticalAlignment="Center" x:Name="Sum_key" Width="50" Height="50" Margin="5" Padding="0" Click="Key_Click">
                 <Button.Resources>
                     <Style TargetType="Border">
-                        <Setter Property="CornerRadius" Value="4"/>
+                        <Setter Property="CornerRadius" Value="4" />
                     </Style>
                 </Button.Resources>
             </Button>
             <Button Content="BackSpace" VerticalAlignment="Center" x:Name="BackSpace_key" Width="110" Height="50" Margin="5 5 30 5" Padding="0" Click="Key_Click">
                 <Button.Resources>
                     <Style TargetType="Border">
-                        <Setter Property="CornerRadius" Value="4"/>
+                        <Setter Property="CornerRadius" Value="4" />
                     </Style>
                 </Button.Resources>
             </Button>
             <Button Content="Ins" VerticalAlignment="Center" x:Name="Insert_key" Width="60" Height="50" Margin="5" Padding="0" Click="Key_Click">
                 <Button.Resources>
                     <Style TargetType="Border">
-                        <Setter Property="CornerRadius" Value="4"/>
+                        <Setter Property="CornerRadius" Value="4" />
                     </Style>
                 </Button.Resources>
             </Button>
             <Button Content="Home" VerticalAlignment="Center" x:Name="Home_key" Width="60" Height="50" Margin="5" Padding="0" Click="Key_Click">
                 <Button.Resources>
                     <Style TargetType="Border">
-                        <Setter Property="CornerRadius" Value="4"/>
+                        <Setter Property="CornerRadius" Value="4" />
                     </Style>
                 </Button.Resources>
             </Button>
             <Button Content="PgUp" VerticalAlignment="Center" x:Name="PageUp_key" Width="60" Height="50" Margin="5 5 30 5" Padding="0" Click="Key_Click">
                 <Button.Resources>
                     <Style TargetType="Border">
-                        <Setter Property="CornerRadius" Value="4"/>
+                        <Setter Property="CornerRadius" Value="4" />
                     </Style>
                 </Button.Resources>
             </Button>
             <Button Content="NumLK" VerticalAlignment="Center" x:Name="NumLock_key" Width="50" Height="50" Margin="5" FontSize="10" Click="Key_Click">
                 <Button.Resources>
                     <Style TargetType="Border">
-                        <Setter Property="CornerRadius" Value="4"/>
+                        <Setter Property="CornerRadius" Value="4" />
                     </Style>
                 </Button.Resources>
             </Button>
             <Button Content="/" VerticalAlignment="Center" x:Name="NumpadSlash_key" Width="50" Height="50" Margin="5" Padding="0" Click="Key_Click">
                 <Button.Resources>
                     <Style TargetType="Border">
-                        <Setter Property="CornerRadius" Value="4"/>
+                        <Setter Property="CornerRadius" Value="4" />
                     </Style>
                 </Button.Resources>
             </Button>
             <Button Content="*" VerticalAlignment="Center" x:Name="NumpadStar_key" Width="50" Height="50" Margin="5 5 10 5" Padding="0" Click="Key_Click">
                 <Button.Resources>
                     <Style TargetType="Border">
-                        <Setter Property="CornerRadius" Value="4"/>
+                        <Setter Property="CornerRadius" Value="4" />
                     </Style>
                 </Button.Resources>
             </Button>
@@ -281,140 +281,140 @@
             <Button Content="Tab" VerticalAlignment="Center" x:Name="TAB_key" Width="80" Height="50" Margin="5" Padding="0" Click="Key_Click">
                 <Button.Resources>
                     <Style TargetType="Border">
-                        <Setter Property="CornerRadius" Value="4"/>
+                        <Setter Property="CornerRadius" Value="4" />
                     </Style>
                 </Button.Resources>
             </Button>
             <Button Content="Q" VerticalAlignment="Center" x:Name="Q_key" Width="50" Height="50" Margin="5" Padding="0" Click="Key_Click">
                 <Button.Resources>
                     <Style TargetType="Border">
-                        <Setter Property="CornerRadius" Value="4"/>
+                        <Setter Property="CornerRadius" Value="4" />
                     </Style>
                 </Button.Resources>
             </Button>
             <Button Content="W" VerticalAlignment="Center" x:Name="W_key" Width="50" Height="50" Margin="5" Padding="0" Click="Key_Click">
                 <Button.Resources>
                     <Style TargetType="Border">
-                        <Setter Property="CornerRadius" Value="4"/>
+                        <Setter Property="CornerRadius" Value="4" />
                     </Style>
                 </Button.Resources>
             </Button>
             <Button Content="E" VerticalAlignment="Center" x:Name="E_key" Width="50" Height="50" Margin="5" Padding="0" Click="Key_Click">
                 <Button.Resources>
                     <Style TargetType="Border">
-                        <Setter Property="CornerRadius" Value="4"/>
+                        <Setter Property="CornerRadius" Value="4" />
                     </Style>
                 </Button.Resources>
             </Button>
             <Button Content="R" VerticalAlignment="Center" x:Name="R_key" Width="50" Height="50" Margin="5" Padding="0" Click="Key_Click">
                 <Button.Resources>
                     <Style TargetType="Border">
-                        <Setter Property="CornerRadius" Value="4"/>
+                        <Setter Property="CornerRadius" Value="4" />
                     </Style>
                 </Button.Resources>
             </Button>
             <Button Content="T" VerticalAlignment="Center" x:Name="T_key" Width="50" Height="50" Margin="5" Padding="0" Click="Key_Click">
                 <Button.Resources>
                     <Style TargetType="Border">
-                        <Setter Property="CornerRadius" Value="4"/>
+                        <Setter Property="CornerRadius" Value="4" />
                     </Style>
                 </Button.Resources>
             </Button>
             <Button Content="Y" VerticalAlignment="Center" x:Name="Y_key" Width="50" Height="50" Margin="5" Padding="0" Click="Key_Click">
                 <Button.Resources>
                     <Style TargetType="Border">
-                        <Setter Property="CornerRadius" Value="4"/>
+                        <Setter Property="CornerRadius" Value="4" />
                     </Style>
                 </Button.Resources>
             </Button>
             <Button Content="U" VerticalAlignment="Center" x:Name="U_key" Width="50" Height="50" Margin="5" Padding="0" Click="Key_Click">
                 <Button.Resources>
                     <Style TargetType="Border">
-                        <Setter Property="CornerRadius" Value="4"/>
+                        <Setter Property="CornerRadius" Value="4" />
                     </Style>
                 </Button.Resources>
             </Button>
             <Button Content="I" VerticalAlignment="Center" x:Name="I_key" Width="50" Height="50" Margin="5" Padding="0" Click="Key_Click">
                 <Button.Resources>
                     <Style TargetType="Border">
-                        <Setter Property="CornerRadius" Value="4"/>
+                        <Setter Property="CornerRadius" Value="4" />
                     </Style>
                 </Button.Resources>
             </Button>
             <Button Content="O" VerticalAlignment="Center" x:Name="O_key" Width="50" Height="50" Margin="5" Padding="0" Click="Key_Click">
                 <Button.Resources>
                     <Style TargetType="Border">
-                        <Setter Property="CornerRadius" Value="4"/>
+                        <Setter Property="CornerRadius" Value="4" />
                     </Style>
                 </Button.Resources>
             </Button>
             <Button Content="P" VerticalAlignment="Center" x:Name="P_key" Width="50" Height="50" Margin="5" Padding="0" Click="Key_Click">
                 <Button.Resources>
                     <Style TargetType="Border">
-                        <Setter Property="CornerRadius" Value="4"/>
+                        <Setter Property="CornerRadius" Value="4" />
                     </Style>
                 </Button.Resources>
             </Button>
             <Button Content="[" VerticalAlignment="Center" x:Name="OpenSquareBracket_key" Width="50" Height="50" Margin="5" Padding="0" Click="Key_Click">
                 <Button.Resources>
                     <Style TargetType="Border">
-                        <Setter Property="CornerRadius" Value="4"/>
+                        <Setter Property="CornerRadius" Value="4" />
                     </Style>
                 </Button.Resources>
             </Button>
             <Button Content="]" VerticalAlignment="Center" x:Name="CloseSquareBracket_key" Width="50" Height="50" Margin="5" Padding="0" Click="Key_Click">
                 <Button.Resources>
                     <Style TargetType="Border">
-                        <Setter Property="CornerRadius" Value="4"/>
+                        <Setter Property="CornerRadius" Value="4" />
                     </Style>
                 </Button.Resources>
             </Button>
             <Button Content="\" VerticalAlignment="Center" x:Name="Backslash_key" Width="80" Height="50" Margin="5 5 30 5" Padding="0" Click="Key_Click">
                 <Button.Resources>
                     <Style TargetType="Border">
-                        <Setter Property="CornerRadius" Value="4"/>
+                        <Setter Property="CornerRadius" Value="4" />
                     </Style>
                 </Button.Resources>
             </Button>
             <Button Content="Del" VerticalAlignment="Center" x:Name="Delete_key" Width="60" Height="50" Margin="5" Padding="0" Click="Key_Click">
                 <Button.Resources>
                     <Style TargetType="Border">
-                        <Setter Property="CornerRadius" Value="4"/>
+                        <Setter Property="CornerRadius" Value="4" />
                     </Style>
                 </Button.Resources>
             </Button>
             <Button Content="End" VerticalAlignment="Center" x:Name="End_key" Width="60" Height="50" Margin="5" Padding="0" Click="Key_Click">
                 <Button.Resources>
                     <Style TargetType="Border">
-                        <Setter Property="CornerRadius" Value="4"/>
+                        <Setter Property="CornerRadius" Value="4" />
                     </Style>
                 </Button.Resources>
             </Button>
             <Button Content="PgDn" VerticalAlignment="Center" x:Name="PageDown_key" Width="60" Height="50" Margin="5 5 30 5" Padding="0" Click="Key_Click">
                 <Button.Resources>
                     <Style TargetType="Border">
-                        <Setter Property="CornerRadius" Value="4"/>
+                        <Setter Property="CornerRadius" Value="4" />
                     </Style>
                 </Button.Resources>
             </Button>
             <Button Content="7" VerticalAlignment="Center" x:Name="Numpad7_key" Width="50" Height="50" Margin="5" Padding="0" Click="Key_Click">
                 <Button.Resources>
                     <Style TargetType="Border">
-                        <Setter Property="CornerRadius" Value="4"/>
+                        <Setter Property="CornerRadius" Value="4" />
                     </Style>
                 </Button.Resources>
             </Button>
             <Button Content="8" VerticalAlignment="Center" x:Name="Numpad8_key" Width="50" Height="50" Margin="5" Padding="0" Click="Key_Click">
                 <Button.Resources>
                     <Style TargetType="Border">
-                        <Setter Property="CornerRadius" Value="4"/>
+                        <Setter Property="CornerRadius" Value="4" />
                     </Style>
                 </Button.Resources>
             </Button>
             <Button Content="9" VerticalAlignment="Center" x:Name="Numpad9_key" Width="50" Height="50" Margin="5 5 10 5" Padding="0" Click="Key_Click">
                 <Button.Resources>
                     <Style TargetType="Border">
-                        <Setter Property="CornerRadius" Value="4"/>
+                        <Setter Property="CornerRadius" Value="4" />
                     </Style>
                 </Button.Resources>
             </Button>
@@ -423,112 +423,112 @@
             <Button Content="Caps" VerticalAlignment="Center" x:Name="CapsLock_key" Width="100" Height="50" Margin="5" Padding="0" Click="Key_Click">
                 <Button.Resources>
                     <Style TargetType="Border">
-                        <Setter Property="CornerRadius" Value="4"/>
+                        <Setter Property="CornerRadius" Value="4" />
                     </Style>
                 </Button.Resources>
             </Button>
             <Button Content="A" VerticalAlignment="Center" x:Name="A_key" Width="50" Height="50" Margin="5" Padding="0" Click="Key_Click">
                 <Button.Resources>
                     <Style TargetType="Border">
-                        <Setter Property="CornerRadius" Value="4"/>
+                        <Setter Property="CornerRadius" Value="4" />
                     </Style>
                 </Button.Resources>
             </Button>
             <Button Content="S" VerticalAlignment="Center" x:Name="S_key" Width="50" Height="50" Margin="5" Padding="0" Click="Key_Click">
                 <Button.Resources>
                     <Style TargetType="Border">
-                        <Setter Property="CornerRadius" Value="4"/>
+                        <Setter Property="CornerRadius" Value="4" />
                     </Style>
                 </Button.Resources>
             </Button>
             <Button Content="D" VerticalAlignment="Center" x:Name="D_key" Width="50" Height="50" Margin="5" Padding="0" Click="Key_Click">
                 <Button.Resources>
                     <Style TargetType="Border">
-                        <Setter Property="CornerRadius" Value="4"/>
+                        <Setter Property="CornerRadius" Value="4" />
                     </Style>
                 </Button.Resources>
             </Button>
             <Button Content="F" VerticalAlignment="Center" x:Name="F_key" Width="50" Height="50" Margin="5" Padding="0" Click="Key_Click">
                 <Button.Resources>
                     <Style TargetType="Border">
-                        <Setter Property="CornerRadius" Value="4"/>
+                        <Setter Property="CornerRadius" Value="4" />
                     </Style>
                 </Button.Resources>
             </Button>
             <Button Content="G" VerticalAlignment="Center" x:Name="G_key" Width="50" Height="50" Margin="5" Padding="0" Click="Key_Click">
                 <Button.Resources>
                     <Style TargetType="Border">
-                        <Setter Property="CornerRadius" Value="4"/>
+                        <Setter Property="CornerRadius" Value="4" />
                     </Style>
                 </Button.Resources>
             </Button>
             <Button Content="H" VerticalAlignment="Center" x:Name="H_key" Width="50" Height="50" Margin="5" Padding="0" Click="Key_Click">
                 <Button.Resources>
                     <Style TargetType="Border">
-                        <Setter Property="CornerRadius" Value="4"/>
+                        <Setter Property="CornerRadius" Value="4" />
                     </Style>
                 </Button.Resources>
             </Button>
             <Button Content="J" VerticalAlignment="Center" x:Name="J_key" Width="50" Height="50" Margin="5" Padding="0" Click="Key_Click">
                 <Button.Resources>
                     <Style TargetType="Border">
-                        <Setter Property="CornerRadius" Value="4"/>
+                        <Setter Property="CornerRadius" Value="4" />
                     </Style>
                 </Button.Resources>
             </Button>
             <Button Content="K" VerticalAlignment="Center" x:Name="K_key" Width="50" Height="50" Margin="5" Padding="0" Click="Key_Click">
                 <Button.Resources>
                     <Style TargetType="Border">
-                        <Setter Property="CornerRadius" Value="4"/>
+                        <Setter Property="CornerRadius" Value="4" />
                     </Style>
                 </Button.Resources>
             </Button>
             <Button Content="L" VerticalAlignment="Center" x:Name="L_key" Width="50" Height="50" Margin="5" Padding="0" Click="Key_Click">
                 <Button.Resources>
                     <Style TargetType="Border">
-                        <Setter Property="CornerRadius" Value="4"/>
+                        <Setter Property="CornerRadius" Value="4" />
                     </Style>
                 </Button.Resources>
             </Button>
             <Button Content=";" VerticalAlignment="Center" x:Name="PointComma_key" Width="50" Height="50" Margin="5" Padding="0" Click="Key_Click">
                 <Button.Resources>
                     <Style TargetType="Border">
-                        <Setter Property="CornerRadius" Value="4"/>
+                        <Setter Property="CornerRadius" Value="4" />
                     </Style>
                 </Button.Resources>
             </Button>
             <Button Content="'" VerticalAlignment="Center" x:Name="QuotationMark_key" Width="50" Height="50" Margin="5" Padding="0" Click="Key_Click">
                 <Button.Resources>
                     <Style TargetType="Border">
-                        <Setter Property="CornerRadius" Value="4"/>
+                        <Setter Property="CornerRadius" Value="4" />
                     </Style>
                 </Button.Resources>
             </Button>
             <Button Content="Enter" VerticalAlignment="Center" x:Name="Enter_key" Width="120" Height="50" Margin="5 5 265 5" Padding="0" Click="Key_Click">
                 <Button.Resources>
                     <Style TargetType="Border">
-                        <Setter Property="CornerRadius" Value="4"/>
+                        <Setter Property="CornerRadius" Value="4" />
                     </Style>
                 </Button.Resources>
             </Button>
             <Button Content="4" VerticalAlignment="Center" x:Name="Numpad4_key" Width="50" Height="50" Margin="5" Padding="0" Click="Key_Click">
                 <Button.Resources>
                     <Style TargetType="Border">
-                        <Setter Property="CornerRadius" Value="4"/>
+                        <Setter Property="CornerRadius" Value="4" />
                     </Style>
                 </Button.Resources>
             </Button>
             <Button Content="5" VerticalAlignment="Center" x:Name="Numpad5_key" Width="50" Height="50" Margin="5" Padding="0" Click="Key_Click">
                 <Button.Resources>
                     <Style TargetType="Border">
-                        <Setter Property="CornerRadius" Value="4"/>
+                        <Setter Property="CornerRadius" Value="4" />
                     </Style>
                 </Button.Resources>
             </Button>
             <Button Content="6" VerticalAlignment="Center" x:Name="Numpad6_key" Width="50" Height="50" Margin="5 5 10 5" Padding="0" Click="Key_Click">
                 <Button.Resources>
                     <Style TargetType="Border">
-                        <Setter Property="CornerRadius" Value="4"/>
+                        <Setter Property="CornerRadius" Value="4" />
                     </Style>
                 </Button.Resources>
             </Button>
@@ -537,112 +537,112 @@
             <Button Content="Shift" VerticalAlignment="Center" x:Name="LeftShift_key" Width="130" Height="50" Margin="5" Padding="0" Click="Key_Click">
                 <Button.Resources>
                     <Style TargetType="Border">
-                        <Setter Property="CornerRadius" Value="4"/>
+                        <Setter Property="CornerRadius" Value="4" />
                     </Style>
                 </Button.Resources>
             </Button>
             <Button Content="Z" VerticalAlignment="Center" x:Name="Z_key" Width="50" Height="50" Margin="5" Padding="0" Click="Key_Click">
                 <Button.Resources>
                     <Style TargetType="Border">
-                        <Setter Property="CornerRadius" Value="4"/>
+                        <Setter Property="CornerRadius" Value="4" />
                     </Style>
                 </Button.Resources>
             </Button>
             <Button Content="X" VerticalAlignment="Center" x:Name="X_key" Width="50" Height="50" Margin="5" Padding="0" Click="Key_Click">
                 <Button.Resources>
                     <Style TargetType="Border">
-                        <Setter Property="CornerRadius" Value="4"/>
+                        <Setter Property="CornerRadius" Value="4" />
                     </Style>
                 </Button.Resources>
             </Button>
             <Button Content="C" VerticalAlignment="Center" x:Name="C_key" Width="50" Height="50" Margin="5" Padding="0" Click="Key_Click">
                 <Button.Resources>
                     <Style TargetType="Border">
-                        <Setter Property="CornerRadius" Value="4"/>
+                        <Setter Property="CornerRadius" Value="4" />
                     </Style>
                 </Button.Resources>
             </Button>
             <Button Content="V" VerticalAlignment="Center" x:Name="V_key" Width="50" Height="50" Margin="5" Padding="0" Click="Key_Click">
                 <Button.Resources>
                     <Style TargetType="Border">
-                        <Setter Property="CornerRadius" Value="4"/>
+                        <Setter Property="CornerRadius" Value="4" />
                     </Style>
                 </Button.Resources>
             </Button>
             <Button Content="B" VerticalAlignment="Center" x:Name="B_key" Width="50" Height="50" Margin="5" Padding="0" Click="Key_Click">
                 <Button.Resources>
                     <Style TargetType="Border">
-                        <Setter Property="CornerRadius" Value="4"/>
+                        <Setter Property="CornerRadius" Value="4" />
                     </Style>
                 </Button.Resources>
             </Button>
             <Button Content="N" VerticalAlignment="Center" x:Name="N_key" Width="50" Height="50" Margin="5" Padding="0" Click="Key_Click">
                 <Button.Resources>
                     <Style TargetType="Border">
-                        <Setter Property="CornerRadius" Value="4"/>
+                        <Setter Property="CornerRadius" Value="4" />
                     </Style>
                 </Button.Resources>
             </Button>
             <Button Content="M" VerticalAlignment="Center" x:Name="M_key" Width="50" Height="50" Margin="5" Padding="0" Click="Key_Click">
                 <Button.Resources>
                     <Style TargetType="Border">
-                        <Setter Property="CornerRadius" Value="4"/>
+                        <Setter Property="CornerRadius" Value="4" />
                     </Style>
                 </Button.Resources>
             </Button>
             <Button Content="&lt;" VerticalAlignment="Center" x:Name="Less_key" Width="50" Height="50" Margin="5" Padding="0" Click="Key_Click">
                 <Button.Resources>
                     <Style TargetType="Border">
-                        <Setter Property="CornerRadius" Value="4"/>
+                        <Setter Property="CornerRadius" Value="4" />
                     </Style>
                 </Button.Resources>
             </Button>
             <Button Content="&gt;" VerticalAlignment="Center" x:Name="Greater_key" Width="50" Height="50" Margin="5" Padding="0" Click="Key_Click">
                 <Button.Resources>
                     <Style TargetType="Border">
-                        <Setter Property="CornerRadius" Value="4"/>
+                        <Setter Property="CornerRadius" Value="4" />
                     </Style>
                 </Button.Resources>
             </Button>
             <Button Content="?" VerticalAlignment="Center" x:Name="QuestionMark_key" Width="50" Height="50" Margin="5" Padding="0" Click="Key_Click">
                 <Button.Resources>
                     <Style TargetType="Border">
-                        <Setter Property="CornerRadius" Value="4"/>
+                        <Setter Property="CornerRadius" Value="4" />
                     </Style>
                 </Button.Resources>
             </Button>
             <Button Content="Shift" VerticalAlignment="Center" x:Name="RightShift_key" Width="150" Height="50" Margin="5 5 100 5" Padding="0" Click="Key_Click">
                 <Button.Resources>
                     <Style TargetType="Border">
-                        <Setter Property="CornerRadius" Value="4"/>
+                        <Setter Property="CornerRadius" Value="4" />
                     </Style>
                 </Button.Resources>
             </Button>
             <Button Content="↑" VerticalAlignment="Center" x:Name="ArrowUp_key" Width="60" Height="50" Margin="5 5 100 5" Padding="0" Click="Key_Click">
                 <Button.Resources>
                     <Style TargetType="Border">
-                        <Setter Property="CornerRadius" Value="4"/>
+                        <Setter Property="CornerRadius" Value="4" />
                     </Style>
                 </Button.Resources>
             </Button>
             <Button Content="1" VerticalAlignment="Center" x:Name="Numpad1_key" Width="50" Height="50" Margin="5" Padding="0" Click="Key_Click">
                 <Button.Resources>
                     <Style TargetType="Border">
-                        <Setter Property="CornerRadius" Value="4"/>
+                        <Setter Property="CornerRadius" Value="4" />
                     </Style>
                 </Button.Resources>
             </Button>
             <Button Content="2" VerticalAlignment="Center" x:Name="Numpad2_key" Width="50" Height="50" Margin="5" Padding="0" Click="Key_Click">
                 <Button.Resources>
                     <Style TargetType="Border">
-                        <Setter Property="CornerRadius" Value="4"/>
+                        <Setter Property="CornerRadius" Value="4" />
                     </Style>
                 </Button.Resources>
             </Button>
             <Button Content="3" VerticalAlignment="Center" x:Name="Numpad3_key" Width="50" Height="50" Margin="5 5 10 5" Padding="0" Click="Key_Click">
                 <Button.Resources>
                     <Style TargetType="Border">
-                        <Setter Property="CornerRadius" Value="4"/>
+                        <Setter Property="CornerRadius" Value="4" />
                     </Style>
                 </Button.Resources>
             </Button>
@@ -651,91 +651,91 @@
             <Button Content="CTRL" VerticalAlignment="Center" x:Name="LeftControl_key" Width="60" Height="50" Margin="5" Padding="0" Click="Key_Click">
                 <Button.Resources>
                     <Style TargetType="Border">
-                        <Setter Property="CornerRadius" Value="4"/>
+                        <Setter Property="CornerRadius" Value="4" />
                     </Style>
                 </Button.Resources>
             </Button>
             <Button Content="Start" VerticalAlignment="Center" x:Name="LeftStart_key" Width="60" Height="50" Margin="5" Padding="0" Click="Key_Click">
                 <Button.Resources>
                     <Style TargetType="Border">
-                        <Setter Property="CornerRadius" Value="4"/>
+                        <Setter Property="CornerRadius" Value="4" />
                     </Style>
                 </Button.Resources>
             </Button>
             <Button Content="ALT" VerticalAlignment="Center" x:Name="LeftAlt_key" Width="60" Height="50" Margin="5" Padding="0" Click="Key_Click">
                 <Button.Resources>
                     <Style TargetType="Border">
-                        <Setter Property="CornerRadius" Value="4"/>
+                        <Setter Property="CornerRadius" Value="4" />
                     </Style>
                 </Button.Resources>
             </Button>
             <Button Content="Space" VerticalAlignment="Center" x:Name="Space_key" Width="400" Height="50" Margin="5" Padding="0" Click="Key_Click">
                 <Button.Resources>
                     <Style TargetType="Border">
-                        <Setter Property="CornerRadius" Value="4"/>
+                        <Setter Property="CornerRadius" Value="4" />
                     </Style>
                 </Button.Resources>
             </Button>
             <Button Content="ALT" VerticalAlignment="Center" x:Name="RightAlt_key" Width="60" Height="50" Margin="5" Padding="0" Click="Key_Click">
                 <Button.Resources>
                     <Style TargetType="Border">
-                        <Setter Property="CornerRadius" Value="4"/>
+                        <Setter Property="CornerRadius" Value="4" />
                     </Style>
                 </Button.Resources>
             </Button>
             <Button Content="Start" VerticalAlignment="Center" x:Name="RightStart_key" Width="60" Height="50" Margin="5" Padding="0" Click="Key_Click">
                 <Button.Resources>
                     <Style TargetType="Border">
-                        <Setter Property="CornerRadius" Value="4"/>
+                        <Setter Property="CornerRadius" Value="4" />
                     </Style>
                 </Button.Resources>
             </Button>
             <Button Content="Fn" VerticalAlignment="Center" x:Name="Fn_key" Width="60" Height="50" Margin="5" Padding="0" Click="Key_Click">
                 <Button.Resources>
                     <Style TargetType="Border">
-                        <Setter Property="CornerRadius" Value="4"/>
+                        <Setter Property="CornerRadius" Value="4" />
                     </Style>
                 </Button.Resources>
             </Button>
             <Button Content="CTRL" VerticalAlignment="Center" x:Name="RightControl_key" Width="60" Height="50" Margin="5 5 30 5" Padding="0" Click="Key_Click">
                 <Button.Resources>
                     <Style TargetType="Border">
-                        <Setter Property="CornerRadius" Value="4"/>
+                        <Setter Property="CornerRadius" Value="4" />
                     </Style>
                 </Button.Resources>
             </Button>
             <Button Content="←" VerticalAlignment="Center" x:Name="ArrowLeft_key" Width="60" Height="50" Margin="5" Padding="0" Click="Key_Click">
                 <Button.Resources>
                     <Style TargetType="Border">
-                        <Setter Property="CornerRadius" Value="4"/>
+                        <Setter Property="CornerRadius" Value="4" />
                     </Style>
                 </Button.Resources>
             </Button>
             <Button Content="↓" VerticalAlignment="Center" x:Name="ArrowDown_key" Width="60" Height="50" Margin="5" Padding="0" Click="Key_Click">
                 <Button.Resources>
                     <Style TargetType="Border">
-                        <Setter Property="CornerRadius" Value="4"/>
+                        <Setter Property="CornerRadius" Value="4" />
                     </Style>
                 </Button.Resources>
             </Button>
             <Button Content="→" VerticalAlignment="Center" x:Name="ArrowRight_key" Width="60" Height="50" Margin="5 5 30 5" Padding="0" Click="Key_Click">
                 <Button.Resources>
                     <Style TargetType="Border">
-                        <Setter Property="CornerRadius" Value="4"/>
+                        <Setter Property="CornerRadius" Value="4" />
                     </Style>
                 </Button.Resources>
             </Button>
             <Button Content="0" VerticalAlignment="Center" x:Name="Numpad0_key" Width="110" Height="50" Margin="5" Padding="0" Click="Key_Click">
                 <Button.Resources>
                     <Style TargetType="Border">
-                        <Setter Property="CornerRadius" Value="4"/>
+                        <Setter Property="CornerRadius" Value="4" />
                     </Style>
                 </Button.Resources>
             </Button>
             <Button Content="." VerticalAlignment="Center" x:Name="Point_key" Width="50" Height="50" Margin="5 5 10 5" Padding="0" Click="Key_Click">
                 <Button.Resources>
                     <Style TargetType="Border">
-                        <Setter Property="CornerRadius" Value="4"/>
+                        <Setter Property="CornerRadius" Value="4" />
                     </Style>
                 </Button.Resources>
             </Button>
@@ -743,21 +743,21 @@
         <Button Content="-" VerticalAlignment="Center" x:Name="NumpadMinus_key" Width="50" Height="50"  Grid.Column="1" Grid.Row="1" HorizontalAlignment="Right" Padding="0" Click="Key_Click">
             <Button.Resources>
                 <Style TargetType="Border">
-                    <Setter Property="CornerRadius" Value="4"/>
+                    <Setter Property="CornerRadius" Value="4" />
                 </Style>
             </Button.Resources>
         </Button>
         <Button Content="+" VerticalAlignment="Center" x:Name="NumpadSum_key" Width="50" Height="120"  Grid.Row="2" Grid.RowSpan="2" HorizontalAlignment="Right" Padding="0" Grid.Column="1" Click="Key_Click">
             <Button.Resources>
                 <Style TargetType="Border">
-                    <Setter Property="CornerRadius" Value="4"/>
+                    <Setter Property="CornerRadius" Value="4" />
                 </Style>
             </Button.Resources>
         </Button>
         <Button Content="Enter" VerticalAlignment="Center" x:Name="NumpadEnter_key" Width="50" Height="119"  Grid.Row="4" Grid.RowSpan="2" HorizontalAlignment="Right" Grid.Column="1" Padding="0" Click="Key_Click">
             <Button.Resources>
                 <Style TargetType="Border">
-                    <Setter Property="CornerRadius" Value="4"/>
+                    <Setter Property="CornerRadius" Value="4" />
                 </Style>
             </Button.Resources>
         </Button>

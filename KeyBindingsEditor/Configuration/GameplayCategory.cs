@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Media;
 
 namespace KeyBindingsEditor.Configuration
@@ -61,9 +56,9 @@ namespace KeyBindingsEditor.Configuration
 
     public class ActionInfo : INotifyPropertyChanged
     {
-        private string name;
-        private string title;
-        private string description;
+        private string name = null!;
+        private string title = null!;
+        private string description = null!;
         private string? category;
 
         public string? Category

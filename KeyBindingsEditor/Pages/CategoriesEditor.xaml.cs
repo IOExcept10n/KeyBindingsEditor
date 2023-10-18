@@ -1,20 +1,10 @@
 ﻿using KeyBindingsEditor.Configuration;
 using KeyBindingsEditor.ViewModel;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace KeyBindingsEditor.Pages
 {
@@ -24,9 +14,9 @@ namespace KeyBindingsEditor.Pages
     public partial class CategoriesEditor : Page
     {
         private int currentCategoryIndex = -1;
-        private GameplayCategory? currentCategory => EditorViewModel.Instance.Configuration.Categories[currentCategoryIndex];
+        private GameplayCategory? CurrentCategory => EditorViewModel.Instance.Configuration.Categories[currentCategoryIndex];
 
-        private bool currentCategorySelected => currentCategoryIndex >= 0 && currentCategory != null;
+        private bool CurrentCategorySelected => currentCategoryIndex >= 0 && currentCategoryIndex < EditorViewModel.Instance.Configuration.Categories.Count && CurrentCategory != null;
 
         public CategoriesEditor()
         {
@@ -56,14 +46,14 @@ namespace KeyBindingsEditor.Pages
         {
             if (CategoriesPanel.SelectedIndex != currentCategoryIndex)
             {
-                if (currentCategorySelected)
+                if (CurrentCategorySelected)
                 {
-                    CloseCard(currentCategory);
+                    CloseCard(CurrentCategory);
                 }
                 currentCategoryIndex = CategoriesPanel.SelectedIndex;
                 if (currentCategoryIndex < 0)
                     return;
-                OpenCard(currentCategory);
+                OpenCard(CurrentCategory);
             }
         }
 
@@ -131,18 +121,18 @@ namespace KeyBindingsEditor.Pages
             for (int i = 0; i < VisualTreeHelper.GetChildrenCount(obj); i++)
             {
                 DependencyObject child = VisualTreeHelper.GetChild(obj, i);
-                if (child != null && child is childItem)
+                if (child != null && child is childItem item)
                 {
-                    return (childItem)child;
+                    return item;
                 }
                 else
                 {
-                    childItem childOfChild = FindVisualChild<childItem>(child);
+                    childItem childOfChild = FindVisualChild<childItem>(child!);
                     if (childOfChild != null)
                         return childOfChild;
                 }
             }
-            return null;
+            return null!;
         }
 
         private void AddActionButton_Click(object sender, RoutedEventArgs e)
@@ -167,10 +157,10 @@ namespace KeyBindingsEditor.Pages
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            if (currentCategory != null)
+            if (CurrentCategory != null)
             {
                 ActionInfo context = (ActionInfo)((Button)sender).DataContext;
-                currentCategory.Actions.Remove(context);
+                CurrentCategory.Actions.Remove(context);
             }
         }
 

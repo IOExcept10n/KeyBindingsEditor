@@ -1,21 +1,9 @@
 ﻿using KeyBindingsEditor.Configuration;
 using KeyBindingsEditor.ViewModel;
 using ModernWpf.Controls;
-using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace KeyBindingsEditor
 {
@@ -107,16 +95,19 @@ namespace KeyBindingsEditor
                     CurrentPageFrame.Navigate(new Uri("Pages/KeyboardLayout.xaml", UriKind.Relative));
                     context.CurrentEditorType = EditorInputType.Keyboard;
                     break;
+
                 case 1:
                     Properties.Visibility = Visibility.Visible;
                     CurrentPageFrame.Navigate(new Uri("Pages/MouseLayout.xaml", UriKind.Relative));
                     context.CurrentEditorType = EditorInputType.Mouse;
                     break;
+
                 case 2:
                     Properties.Visibility = Visibility.Visible;
                     CurrentPageFrame.Navigate(new Uri("Pages/GamepadLayout.xaml", UriKind.Relative));
                     context.CurrentEditorType = EditorInputType.Gamepad;
                     break;
+
                 case 3:
                     Properties.Visibility = Visibility.Hidden;
                     CurrentPageFrame.Navigate(new Uri("Pages/CategoriesEditor.xaml", UriKind.Relative));
@@ -193,7 +184,6 @@ namespace KeyBindingsEditor
 
         private void DoubleClickCategory_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-
         }
 
         private void IsDoubleClickEnabled_Checked(object sender, RoutedEventArgs e)
@@ -222,7 +212,6 @@ namespace KeyBindingsEditor
 
         private void HoldCategory_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-
         }
 
         private void HoldAction_SelectionChanged(object sender, SelectionChangedEventArgs e)

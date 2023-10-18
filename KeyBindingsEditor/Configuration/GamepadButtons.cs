@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace KeyBindingsEditor.Configuration
 {
@@ -66,6 +62,16 @@ namespace KeyBindingsEditor.Configuration
         /// Right shoulder button.
         /// </summary>
         RightShoulder = 1 << 9,
+
+        /// <summary>
+        /// Left trigger button.
+        /// </summary>
+        LeftTrigger = 1 << 10,
+
+        /// <summary>
+        /// Right trigger button.
+        /// </summary>
+        RightTrigger = 1 << 11,
 
         /// <summary>
         /// A button.

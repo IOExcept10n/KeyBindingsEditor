@@ -1,14 +1,10 @@
 ﻿using KeyBindingsEditor.Configuration;
 using Microsoft.Win32;
 using Newtonsoft.Json;
-using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 
 namespace KeyBindingsEditor.ViewModel
@@ -21,12 +17,15 @@ namespace KeyBindingsEditor.ViewModel
         Gamepad
     }
 
+    /// <summary>
+    /// Represents the view model for the editor.
+    /// </summary>
     internal class EditorViewModel : INotifyPropertyChanged
     {
         private string? filePath;
         private bool hasUnsavedChanges;
         private IKeyBinding? selectedBinding;
-        private InputConfiguration configuration;
+        private InputConfiguration configuration = null!;
         private IEnumerable<IKeyBinding>? bindingsContext;
         private EditorInputType currentEditorType;
         private IKeyBinding? combinationSource;
@@ -34,8 +33,11 @@ namespace KeyBindingsEditor.ViewModel
         private IKeyBinding? sequenceFirst;
         private IKeyBinding? sequenceSecond;
 
-        public static EditorViewModel Instance { get; set; }
+        public static EditorViewModel Instance { get; set; } = null!;
 
+        /// <summary>
+        /// The configuration loaded into an editor.
+        /// </summary>
         public InputConfiguration Configuration
         {
             get => configuration;
@@ -50,6 +52,9 @@ namespace KeyBindingsEditor.ViewModel
             }
         }
 
+        /// <summary>
+        /// The selected binding to vizualize.
+        /// </summary>
         public IKeyBinding? SelectedBinding
         {
             get => selectedBinding;
@@ -60,6 +65,9 @@ namespace KeyBindingsEditor.ViewModel
             }
         }
 
+        /// <summary>
+        /// The first key combination binding selected in the current view.
+        /// </summary>
         public IKeyBinding? SequenceFirst
         {
             get => sequenceFirst;
@@ -70,6 +78,9 @@ namespace KeyBindingsEditor.ViewModel
             }
         }
 
+        /// <summary>
+        /// The second key combination binding selected in the current view.
+        /// </summary>
         public IKeyBinding? SequenceSecond
         {
             get => sequenceSecond;
@@ -80,6 +91,9 @@ namespace KeyBindingsEditor.ViewModel
             }
         }
 
+        /// <summary>
+        /// The third key combination binding selected in the current view.
+        /// </summary>
         public IKeyBinding? SequenceThird
         {
             get => sequenceThird;
@@ -90,6 +104,9 @@ namespace KeyBindingsEditor.ViewModel
             }
         }
 
+        /// <summary>
+        /// The source of the combination to visualize input context.
+        /// </summary>
         public IKeyBinding? CombinationSource
         {
             get => combinationSource;
@@ -102,26 +119,21 @@ namespace KeyBindingsEditor.ViewModel
                 }
                 else
                 {
-                    switch (currentEditorType)
+                    BindingsContext = currentEditorType switch
                     {
-                        case EditorInputType.Keyboard:
-                            BindingsContext = Configuration.Keyboard.Bindings;
-                            break;
-                        case EditorInputType.Mouse:
-                            BindingsContext = Configuration.Mouse.Bindings;
-                            break;
-                        case EditorInputType.Gamepad:
-                            BindingsContext = Configuration.Gamepad.Bindings;
-                            break;
-                        default:
-                            BindingsContext = null;
-                            break;
-                    }
+                        EditorInputType.Keyboard => Configuration.Keyboard.Bindings,
+                        EditorInputType.Mouse => Configuration.Mouse.Bindings,
+                        EditorInputType.Gamepad => Configuration.Gamepad.Bindings,
+                        _ => null,
+                    };
                 }
                 OnPropertyChanged(nameof(CombinationSource));
             }
         }
 
+        /// <summary>
+        /// The context of the input device to visualize.
+        /// </summary>
         public IEnumerable<IKeyBinding>? BindingsContext
         {
             get => bindingsContext;
@@ -132,6 +144,9 @@ namespace KeyBindingsEditor.ViewModel
             }
         }
 
+        /// <summary>
+        /// Determines whether the editor has unsaved changes.
+        /// </summary>
         public bool HasUnsavedChanges
         {
             get => hasUnsavedChanges;
@@ -143,8 +158,14 @@ namespace KeyBindingsEditor.ViewModel
             }
         }
 
+        /// <summary>
+        /// The title of the window to display.
+        /// </summary>
         public string WindowTitle => (FilePath ?? "Untitled Configuration") + (HasUnsavedChanges ? "*" : "");
 
+        /// <summary>
+        /// The path to the opened file to display and save into.
+        /// </summary>
         public string? FilePath
         {
             get => filePath;
@@ -156,6 +177,9 @@ namespace KeyBindingsEditor.ViewModel
             }
         }
 
+        /// <summary>
+        /// Current editor input source selected for the display.
+        /// </summary>
         public EditorInputType CurrentEditorType
         {
             get => currentEditorType;
@@ -175,7 +199,7 @@ namespace KeyBindingsEditor.ViewModel
 
         public bool CurrentCombinationContains<T>(T keys)
         {
-            return (SequenceFirst as KeyBinding<T>)?.Key?.Equals(keys) == true || 
+            return (SequenceFirst as KeyBinding<T>)?.Key?.Equals(keys) == true ||
                    (SequenceSecond as KeyBinding<T>)?.Key?.Equals(keys) == true ||
                    (SequenceThird as KeyBinding<T>)?.Key?.Equals(keys) == true;
         }

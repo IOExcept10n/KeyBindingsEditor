@@ -1,15 +1,13 @@
 ﻿using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace KeyBindingsEditor.Configuration
 {
+    /// <summary>
+    /// Represents a configuration for all input sources that can be loaded into a single file.
+    /// </summary>
     public class InputConfiguration : INotifyPropertyChanged
     {
         private ObservableCollection<GameplayCategory> categories = null!;
@@ -19,6 +17,9 @@ namespace KeyBindingsEditor.Configuration
 
         internal CategoryManager CategoryManager { get; private set; } = null!;
 
+        /// <summary>
+        /// The configuration for the keyboard.
+        /// </summary>
         public KeyboardConfiguration Keyboard
         {
             get => keyboard;
@@ -30,6 +31,9 @@ namespace KeyBindingsEditor.Configuration
             }
         }
 
+        /// <summary>
+        /// The configuration for the mouse.
+        /// </summary>
         public MouseConfiguration Mouse
         {
             get => mouse;
@@ -41,6 +45,9 @@ namespace KeyBindingsEditor.Configuration
             }
         }
 
+        /// <summary>
+        /// The configuration for the gamepad.
+        /// </summary>
         public GamepadConfiguration Gamepad
         {
             get => gamepad;
@@ -52,6 +59,9 @@ namespace KeyBindingsEditor.Configuration
             }
         }
 
+        /// <summary>
+        /// The list of categories used in the file.
+        /// </summary>
         public ObservableCollection<GameplayCategory> Categories
         {
             get => categories;
@@ -121,12 +131,14 @@ namespace KeyBindingsEditor.Configuration
                         b.PropertyChanged += PropertyChanged;
                     }
                     break;
+
                 case System.Collections.Specialized.NotifyCollectionChangedAction.Remove:
                     foreach (GameplayCategory b in e.OldItems!)
                     {
                         b.PropertyChanged -= PropertyChanged;
                     }
                     break;
+
                 case System.Collections.Specialized.NotifyCollectionChangedAction.Reset:
                     foreach (GameplayCategory b in Categories)
                     {

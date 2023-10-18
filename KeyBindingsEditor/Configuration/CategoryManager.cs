@@ -1,12 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace KeyBindingsEditor.Configuration
 {
-    class CategoryManager
+    internal class CategoryManager
     {
         public IList<GameplayCategory> Categories { get; set; }
 
@@ -15,7 +13,7 @@ namespace KeyBindingsEditor.Configuration
             get => Categories.FirstOrDefault(c => c.Name == name);
         }
 
-        public CategoryManager(IList<GameplayCategory> categories) 
+        public CategoryManager(IList<GameplayCategory> categories)
         {
             Categories = categories;
         }

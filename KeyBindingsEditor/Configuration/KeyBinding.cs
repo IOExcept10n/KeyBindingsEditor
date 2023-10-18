@@ -4,9 +4,6 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace KeyBindingsEditor.Configuration
 {
@@ -120,7 +117,6 @@ namespace KeyBindingsEditor.Configuration
             }
         }
 
-
         public event PropertyChangedEventHandler? PropertyChanged;
 
         public bool AnyParents(Func<KeyBinding<TKeyType>, bool> predicate)
@@ -185,12 +181,14 @@ namespace KeyBindingsEditor.Configuration
                         b.PropertyChanged += PropertyChanged;
                     }
                     break;
+
                 case System.Collections.Specialized.NotifyCollectionChangedAction.Remove:
                     foreach (KeyBinding<TKeyType> b in e.OldItems!)
                     {
                         b.PropertyChanged -= PropertyChanged;
                     }
                     break;
+
                 case System.Collections.Specialized.NotifyCollectionChangedAction.Reset:
                     foreach (KeyBinding<TKeyType> b in SequenceNextBindings)
                     {

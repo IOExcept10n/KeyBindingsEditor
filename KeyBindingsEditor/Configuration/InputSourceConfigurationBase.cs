@@ -1,12 +1,11 @@
-﻿using System.Collections.Generic;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using System.ComponentModel;
 
 namespace KeyBindingsEditor.Configuration
 {
     public class InputSourceConfigurationBase<T> : INotifyPropertyChanged
     {
-        private ObservableCollection<KeyBinding<T>> bindings;
+        private ObservableCollection<KeyBinding<T>> bindings = null!;
 
         public ObservableCollection<KeyBinding<T>> Bindings
         {
@@ -34,12 +33,14 @@ namespace KeyBindingsEditor.Configuration
                         b.PropertyChanged += BindingUpdated;
                     }
                     break;
+
                 case System.Collections.Specialized.NotifyCollectionChangedAction.Remove:
                     foreach (KeyBinding<T> b in e.OldItems!)
                     {
                         b.PropertyChanged -= BindingUpdated;
                     }
                     break;
+
                 case System.Collections.Specialized.NotifyCollectionChangedAction.Reset:
                     foreach (KeyBinding<T> b in Bindings)
                     {

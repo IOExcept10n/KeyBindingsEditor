@@ -1,10 +1,6 @@
 ﻿using KeyBindingsEditor.Configuration;
 using KeyBindingsEditor.Utils;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -32,7 +28,7 @@ namespace KeyBindingsEditor.ViewModel
                 ClipToBounds = false,
                 HorizontalAlignment = HorizontalAlignment.Stretch,
                 VerticalAlignment = VerticalAlignment.Stretch,
-                Width = target.Width, 
+                Width = target.Width,
                 Height = target.Height
             };
             Color foreground = binding.ClickAction == null ? Colors.White : background.GetContrast(60);
@@ -52,6 +48,8 @@ namespace KeyBindingsEditor.ViewModel
                     Ellipse notification = new()
                     {
                         Fill = new SolidColorBrush(category.Color),
+                        Stroke = new SolidColorBrush(Colors.Black),
+                        StrokeThickness = 1,
                         Height = 10,
                         Width = 10,
                         VerticalAlignment = VerticalAlignment.Top,
@@ -60,7 +58,7 @@ namespace KeyBindingsEditor.ViewModel
                     grid.Children.Add(notification);
                 }
             }
-            if (binding.HoldAction != null) 
+            if (binding.HoldAction != null)
             {
                 var category = binding.HoldAction.GetCategory(editor.Configuration.CategoryManager);
                 if (category != null)
@@ -68,6 +66,8 @@ namespace KeyBindingsEditor.ViewModel
                     Ellipse notification = new()
                     {
                         Fill = new SolidColorBrush(category.Color),
+                        Stroke = new SolidColorBrush(Colors.Black),
+                        StrokeThickness = 1,
                         Height = 10,
                         Width = 10,
                         VerticalAlignment = VerticalAlignment.Bottom,
@@ -81,6 +81,8 @@ namespace KeyBindingsEditor.ViewModel
                 Rectangle notification = new()
                 {
                     Fill = new SolidColorBrush(Colors.Orange),
+                    Stroke = new SolidColorBrush(Colors.Black),
+                    StrokeThickness = 1,
                     Height = 10,
                     Width = 20,
                     RadiusX = 5,
@@ -112,10 +114,9 @@ namespace KeyBindingsEditor.ViewModel
                 btn.IsEnabled = !editor.CurrentCombinationContains(button.Key);
                 btn.Padding = new Thickness();
             }
-            foreach (var binding in editor.BindingsContext)
+            foreach (var binding in editor.BindingsContext!)
             {
-                var keyBinding = binding as KeyBinding<T>;
-                if (keyBinding != null && buttons.TryGetValue(keyBinding.Key, out var button))
+                if (binding is KeyBinding<T> keyBinding && buttons.TryGetValue(keyBinding.Key, out var button))
                 {
                     ApplyButtonLayout(button.Button, button.Text, keyBinding, editor);
                 }
