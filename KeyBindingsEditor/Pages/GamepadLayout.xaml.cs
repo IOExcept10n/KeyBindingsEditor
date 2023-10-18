@@ -24,5 +24,10 @@ namespace KeyBindingsEditor.Pages
         {
             InitializeComponent();
         }
+
+        private void GamepadKey_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }

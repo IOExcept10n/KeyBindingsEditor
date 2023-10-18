@@ -8,7 +8,125 @@
       d:DesignHeight="450" d:DesignWidth="800"
       Title="GamepadLayout">
 
-    <Grid Background="{StaticResource Gamepad}" Height="400" Width="400">
-        
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="2*"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <Grid Grid.Column = "1" Background="{StaticResource SchemaGamepad}" Height="400" Width="400">
+            <Button Content="Y" VerticalAlignment="Bottom" x:Name="Y" Click="GamepadKey_Click" Width="20" Height="20" Margin="303.5,0,0,242.5" Padding="0">
+                <Button.Resources>
+                    <Style TargetType="Border">
+                        <Setter Property="CornerRadius" Value="4"/>
+                    </Style>
+                </Button.Resources>
+            </Button>
+            <Button Content="X" VerticalAlignment="Bottom" x:Name="X" Click="GamepadKey_Click" Width="20" Height="20" Padding="0" Margin="279.5,0,0,219">
+                <Button.Resources>
+                    <Style TargetType="Border">
+                        <Setter Property="CornerRadius" Value="4"/>
+                    </Style>
+                </Button.Resources>
+            </Button>
+            <Button Content="B" VerticalAlignment="Bottom" x:Name="B" Click="GamepadKey_Click" Width="20" Height="20" Padding="0" Margin="328,0,0,219">
+                <Button.Resources>
+                    <Style TargetType="Border">
+                        <Setter Property="CornerRadius" Value="4"/>
+                    </Style>
+                </Button.Resources>
+            </Button>
+            <Button Content="A" VerticalAlignment="Bottom" x:Name="A" Click="GamepadKey_Click" Width="20" Height="20" Padding="0" Margin="303.5,0,0,194">
+                <Button.Resources>
+                    <Style TargetType="Border">
+                        <Setter Property="CornerRadius" Value="4"/>
+                    </Style>
+                </Button.Resources>
+            </Button>
+            <Button Content="START" VerticalAlignment="Bottom" x:Name="Start_Button" Click="GamepadKey_Click" Width="40" Height="20" Padding="0" Margin="202,0,0,207">
+                <Button.Resources>
+                    <Style TargetType="Border">
+                        <Setter Property="CornerRadius" Value="4"/>
+                    </Style>
+                </Button.Resources>
+            </Button>
+            <Button Content="BACK" VerticalAlignment="Bottom" x:Name="Back_Button" Click="GamepadKey_Click" Width="40" Height="20" Padding="0" Margin="160,0,0,207">
+                <Button.Resources>
+                    <Style TargetType="Border">
+                        <Setter Property="CornerRadius" Value="4"/>
+                    </Style>
+                </Button.Resources>
+            </Button>
+            <Button Content="↑" VerticalAlignment="Bottom" x:Name="Up_DPad" Click="GamepadKey_Click" Width="20" Height="20" Padding="0" Margin="75,0,0,237">
+                <Button.Resources>
+                    <Style TargetType="Border">
+                        <Setter Property="CornerRadius" Value="4"/>
+                    </Style>
+                </Button.Resources>
+            </Button>
+            <Button Content="↓" x:Name="Down_DPad" Click="GamepadKey_Click" Width="20" Height="20" Padding="0" Margin="75,0,0,197" VerticalAlignment="Bottom">
+                <Button.Resources>
+                    <Style TargetType="Border">
+                        <Setter Property="CornerRadius" Value="4"/>
+                    </Style>
+                </Button.Resources>
+            </Button>
+            <Button Content="→" VerticalAlignment="Bottom" x:Name="Right_DPad" Click="GamepadKey_Click" Width="20" Height="20" Padding="0" Margin="94,0,0,217">
+                <Button.Resources>
+                    <Style TargetType="Border">
+                        <Setter Property="CornerRadius" Value="4"/>
+                    </Style>
+                </Button.Resources>
+            </Button>
+            <Button Content="←" VerticalAlignment="Bottom" x:Name="Left_DPad" Click="GamepadKey_Click" Width="20" Height="20" Padding="0" Margin="56,0,0,217">
+                <Button.Resources>
+                    <Style TargetType="Border">
+                        <Setter Property="CornerRadius" Value="4"/>
+                    </Style>
+                </Button.Resources>
+            </Button>
+            <Button Content="LS" VerticalAlignment="Bottom" x:Name="Left_Stick" Click="GamepadKey_Click" Width="20" Height="20" Padding="0" Margin="135,0,0,169">
+                <Button.Resources>
+                    <Style TargetType="Border">
+                        <Setter Property="CornerRadius" Value="4"/>
+                    </Style>
+                </Button.Resources>
+            </Button>
+            <Button Content="RS" VerticalAlignment="Bottom" x:Name="Right_Stick" Click="GamepadKey_Click" Width="20" Height="20" Padding="0" Margin="250,0,0,169">
+                <Button.Resources>
+                    <Style TargetType="Border">
+                        <Setter Property="CornerRadius" Value="4"/>
+                    </Style>
+                </Button.Resources>
+            </Button>
+            <Button Content="RB" VerticalAlignment="Bottom" x:Name="Right_Button" Click="GamepadKey_Click" Width="20" Height="20" Padding="0" Margin="300,0,0,289">
+                <Button.Resources>
+                    <Style TargetType="Border">
+                        <Setter Property="CornerRadius" Value="4"/>
+                    </Style>
+                </Button.Resources>
+            </Button>
+            <Button Content="RT" VerticalAlignment="Bottom" x:Name="Right_Trigger" Click="GamepadKey_Click" Width="20" Height="20" Padding="0" Margin="300,0,0,307">
+                <Button.Resources>
+                    <Style TargetType="Border">
+                        <Setter Property="CornerRadius" Value="4"/>
+                    </Style>
+                </Button.Resources>
+            </Button>
+            <Button Content="LB" VerticalAlignment="Bottom" x:Name="Left_Button" Click="GamepadKey_Click" Width="20" Height="20" Padding="0" Margin="80,0,0,288">
+                <Button.Resources>
+                    <Style TargetType="Border">
+                        <Setter Property="CornerRadius" Value="4"/>
+                    </Style>
+                </Button.Resources>
+            </Button>
+            <Button Content="LT" VerticalAlignment="Bottom" x:Name="Left_Trigger" Click="GamepadKey_Click" Width="20" Height="20" Padding="0" Margin="80,0,0,308">
+                <Button.Resources>
+                    <Style TargetType="Border">
+                        <Setter Property="CornerRadius" Value="4"/>
+                    </Style>
+                </Button.Resources>
+            </Button>
+        </Grid>
     </Grid>
 </Page>

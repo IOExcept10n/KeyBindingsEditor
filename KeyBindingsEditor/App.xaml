@@ -15,6 +15,7 @@
             <!-- Other app resources here -->
             <ImageBrush x:Key="WindowBackground" ImageSource="Assets/Background.png" Stretch="UniformToFill"/>
             <ImageBrush x:Key="SchemaMouse" ImageSource="Assets/Mouseka.png" Stretch="UniformToFill"/>
+            <ImageBrush x:Key="SchemaGamepad" ImageSource="Assets/Gamepad.png" Stretch="UniformToFill"/>
             <ViewModel:EditorViewModel x:Key="Editor" x:Name="EditorInstance"/>
         </ResourceDictionary> 
     </Application.Resources>
