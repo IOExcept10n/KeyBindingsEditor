@@ -59,6 +59,10 @@
                                 <MenuItem Header="_Save..." Name="SaveWorld" Click="SaveFile_Click" />
                                 <MenuItem Header="Save _As..." Name="SaveWorldAs" Click="SaveFileAs_Click" />
                             </MenuItem>
+                            <MenuItem Header="Conf_iguration" Foreground="White">
+                                <MenuItem Header="_Export categories" Name="ExportConfiguration" Click="ExportConfiguration_Click"/>
+                                <MenuItem Header="I_mport categories" Name="Import" Click="Import_Click"/>
+                            </MenuItem>
                         </Menu>
                     </DockPanel>
                     <Frame x:Name="CurrentPageFrame" NavigationUIVisibility="Hidden" Grid.Row="1"/>

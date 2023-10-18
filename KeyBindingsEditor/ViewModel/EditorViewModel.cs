@@ -3,6 +3,7 @@ using Microsoft.Win32;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.IO;
 using System.Linq;
@@ -208,6 +209,42 @@ namespace KeyBindingsEditor.ViewModel
                 Configuration = InputConfiguration.LoadFrom(dialog.FileName);
                 HasUnsavedChanges = false;
                 FilePath = dialog.FileName;
+                return true;
+            }
+            return false;
+        }
+
+        public bool ExportConfiguration()
+        {
+            var dialog = new SaveFileDialog()
+            {
+                AddExtension = true,
+                DefaultExt = "json",
+                OverwritePrompt = true,
+                Title = "Save the categories",
+                Filter = "JSON categories configuration file|*.json|All files|*.*"
+            };
+            if (dialog.ShowDialog() == true)
+            {
+                File.WriteAllText(dialog.FileName, JsonConvert.SerializeObject(Configuration.Categories));
+                return true;
+            }
+            else return false;
+        }
+
+        public bool ImportConfiguration()
+        {
+            OpenFileDialog dialog = new()
+            {
+                DefaultExt = "json",
+                Title = "Select the categories configuration file",
+                CheckFileExists = true,
+                CheckPathExists = true,
+                Filter = "JSON categories configuration file|*.json|All files|*.*"
+            };
+            if (dialog.ShowDialog() == true)
+            {
+                Configuration.Categories = JsonConvert.DeserializeObject<ObservableCollection<GameplayCategory>>(File.ReadAllText(dialog.FileName))!;
                 return true;
             }
             return false;

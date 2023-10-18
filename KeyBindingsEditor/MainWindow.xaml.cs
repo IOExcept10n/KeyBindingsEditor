@@ -256,5 +256,15 @@ namespace KeyBindingsEditor
             context.CombinationSource = context.SequenceSecond;
             bindingPosition = 3;
         }
+
+        private void ExportConfiguration_Click(object sender, RoutedEventArgs e)
+        {
+            context.ExportConfiguration();
+        }
+
+        private void Import_Click(object sender, RoutedEventArgs e)
+        {
+            context.ImportConfiguration();
+        }
     }
 }
