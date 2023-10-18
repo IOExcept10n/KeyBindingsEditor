@@ -28,35 +28,40 @@
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="1.8*"/>
             </Grid.RowDefinitions>
-            <Button Content="LMB" HorizontalAlignment="Center" VerticalAlignment="Bottom" x:Name="Mouse_1" Width="50" Height="50" Margin="5" Padding="0" Grid.Column="1">
+            <Button Content="LMB" HorizontalAlignment="Center" VerticalAlignment="Bottom" x:Name="Mouse_1" Click="Key_Click"
+                    Width="50" Height="50" Margin="5" Padding="0" Grid.Column="1">
                 <Button.Resources>
                     <Style TargetType="Border">
                         <Setter Property="CornerRadius" Value="4"/>
                     </Style>
                 </Button.Resources>
             </Button>
-            <Button Content="RMB" HorizontalAlignment="Center" VerticalAlignment="Bottom" x:Name="Mouse_2" Width="50" Height="50" Margin="5" Padding="0" Grid.Column="3">
+            <Button Content="RMB" HorizontalAlignment="Center" VerticalAlignment="Bottom" x:Name="Mouse_2" Click="Key_Click"
+                    Width="50" Height="50" Margin="5" Padding="0" Grid.Column="3">
                 <Button.Resources>
                     <Style TargetType="Border">
                         <Setter Property="CornerRadius" Value="4"/>
                     </Style>
                 </Button.Resources>
             </Button>
-            <Button Content="M" HorizontalAlignment="Center" VerticalAlignment="Center" x:Name="Mouse_3" Width="20" Height="50" Padding="0" Margin="5 45 5 5" Grid.Column="2" Grid.RowSpan="2">
+            <Button Content="M" HorizontalAlignment="Center" VerticalAlignment="Center" x:Name="Mouse_3" Click="Key_Click"
+                    Width="20" Height="50" Padding="0" Margin="5 45 5 5" Grid.Column="2" Grid.RowSpan="2">
                 <Button.Resources>
                     <Style TargetType="Border">
                         <Setter Property="CornerRadius" Value="4"/>
                     </Style>
                 </Button.Resources>
             </Button>
-            <Button Content="Mouse_4" HorizontalAlignment="Left" VerticalAlignment="Center" x:Name="Mouse_4" Width="50" Height="50" Margin="5" Padding="0" Grid.Row="1" >
+            <Button Content="Mouse_4" HorizontalAlignment="Left" VerticalAlignment="Center" x:Name="Mouse_4" Click="Key_Click"
+                    Width="50" Height="50" Margin="5" Padding="0" Grid.Row="1" >
                 <Button.Resources>
                     <Style TargetType="Border">
                         <Setter Property="CornerRadius" Value="4"/>
                     </Style>
                 </Button.Resources>
             </Button>
-            <Button Content="Mouse_5" HorizontalAlignment="Left" VerticalAlignment="Center" x:Name="Mouse_5" Width="50" Height="50" Margin="5" Padding="0" Grid.Row="2">
+            <Button Content="Mouse_5" HorizontalAlignment="Left" VerticalAlignment="Center" x:Name="Mouse_5" Click="Key_Click"
+                    Width="50" Height="50" Margin="5" Padding="0" Grid.Row="2">
                 <Button.Resources>
                     <Style TargetType="Border">
                         <Setter Property="CornerRadius" Value="4"/>
