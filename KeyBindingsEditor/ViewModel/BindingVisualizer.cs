@@ -13,8 +13,10 @@ namespace KeyBindingsEditor.ViewModel
         public static void ApplyButtonLayout<T>(Button target, string text, KeyBinding<T> binding, EditorViewModel editor)
         {
             Color background = Color.FromArgb(0x88, 50, 50, 50);
+            string bindingDesc = "";
             if (binding.ClickAction != null)
             {
+                bindingDesc += $"Click: {binding.ClickAction.Title};\n";
                 var category = binding.ClickAction.GetCategory(editor.Configuration.CategoryManager);
                 if (category != null)
                 {
@@ -23,6 +25,15 @@ namespace KeyBindingsEditor.ViewModel
             }
             target.Background = new SolidColorBrush(background);
             target.ClipToBounds = false;
+            if (editor.SelectedBinding == binding)
+            {
+                target.BorderThickness = new Thickness(1);
+                target.BorderBrush = new SolidColorBrush(Colors.White);
+            }
+            else
+            {
+                target.BorderThickness = default;
+            }
             Grid grid = new()
             {
                 ClipToBounds = false,
@@ -42,6 +53,7 @@ namespace KeyBindingsEditor.ViewModel
             });
             if (binding.DoubleClickAction != null)
             {
+                bindingDesc += $"Double click: {binding.DoubleClickAction.Title};\n";
                 var category = binding.DoubleClickAction.GetCategory(editor.Configuration.CategoryManager);
                 if (category != null)
                 {
@@ -60,6 +72,7 @@ namespace KeyBindingsEditor.ViewModel
             }
             if (binding.HoldAction != null)
             {
+                bindingDesc += $"Double click: {binding.HoldAction.Title};\n";
                 var category = binding.HoldAction.GetCategory(editor.Configuration.CategoryManager);
                 if (category != null)
                 {
@@ -78,6 +91,7 @@ namespace KeyBindingsEditor.ViewModel
             }
             if (binding.SequenceNextBindings.Count > 0)
             {
+                bindingDesc += $"Next key combinations: {binding.SequenceNextBindings.Count};\n";
                 Rectangle notification = new()
                 {
                     Fill = new SolidColorBrush(Colors.Orange),
@@ -101,6 +115,7 @@ namespace KeyBindingsEditor.ViewModel
                 grid.Children.Add(notificationText);
             }
             target.Content = grid;
+            target.ToolTip = bindingDesc.Trim('\n', ';');
         }
 
         public static void VisualizeLayout<T>(Dictionary<T, (Button Button, string Text)> buttons, EditorViewModel editor) where T : notnull
@@ -113,6 +128,7 @@ namespace KeyBindingsEditor.ViewModel
                 btn.Foreground = new SolidColorBrush(Colors.White);
                 btn.IsEnabled = !editor.CurrentCombinationContains(button.Key);
                 btn.Padding = new Thickness();
+                btn.ToolTip = null;
             }
             foreach (var binding in editor.BindingsContext!)
             {

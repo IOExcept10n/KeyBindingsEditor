@@ -5,6 +5,11 @@
     <TargetFramework>net6.0-windows</TargetFramework>
     <Nullable>enable</Nullable>
     <UseWPF>true</UseWPF>
+    <Version>1.1.0</Version>
+    <Description>The editor for input layout for games</Description>
+    <Copyright>Copyright 2023 ­© IOExcept10n</Copyright>
+    <Authors>IOExcept10n, WiverLord</Authors>
+    <Title>Input bindings editor</Title>
   </PropertyGroup>
 
   <ItemGroup>

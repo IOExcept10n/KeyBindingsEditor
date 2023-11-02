@@ -5,6 +5,9 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.IO;
+using System.Linq;
+using System.Reflection;
+using System.Text;
 using System.Windows;
 
 namespace KeyBindingsEditor.ViewModel
@@ -208,7 +211,9 @@ namespace KeyBindingsEditor.ViewModel
         {
             if (SaveIfUnsaved())
             {
+                SelectedBinding = SequenceFirst = SequenceSecond = SequenceThird = CombinationSource = null;
                 Configuration = new();
+                HasUnsavedChanges = false;
                 return true;
             }
             return false;
@@ -222,11 +227,11 @@ namespace KeyBindingsEditor.ViewModel
         {
             OpenFileDialog dialog = new()
             {
-                DefaultExt = "json",
+                DefaultExt = "keymap",
                 Title = "Select the input configuration file",
                 CheckFileExists = true,
                 CheckPathExists = true,
-                Filter = "JSON input configuration file|*.json|All files|*.*"
+                Filter = "JSON input configuration file|*.keymap|JSON files|*.json|All files|*.*"
             };
             if (dialog.ShowDialog() == true)
             {
@@ -318,10 +323,10 @@ namespace KeyBindingsEditor.ViewModel
             var dialog = new SaveFileDialog()
             {
                 AddExtension = true,
-                DefaultExt = "json",
+                DefaultExt = "keymap",
                 OverwritePrompt = true,
                 Title = "Save the configuration",
-                Filter = "JSON input configuration file|*.json|All files|*.*"
+                Filter = "JSON input configuration file|*.keymap|JSON files|*.json|All files|*.*"
             };
             if (dialog.ShowDialog() == true)
             {
@@ -331,6 +336,88 @@ namespace KeyBindingsEditor.ViewModel
                 return true;
             }
             else return false;
+        }
+
+        public bool CreateMarkdown()
+        {
+            var dialog = new SaveFileDialog()
+            {
+                AddExtension = true,
+                DefaultExt = "md",
+                OverwritePrompt = true,
+                Title = "Save the table",
+                Filter = "Markdown file|*.md|All files|*.*"
+            };
+            if (dialog.ShowDialog() == true)
+            {
+                StringBuilder markdown = new();
+                markdown
+                    .AppendLine("# Input configuration")
+                    .AppendLine()
+                    .AppendLine($"*Made with KeyBindingsEditor v.{Assembly.GetExecutingAssembly().GetName().Version}*")
+                    .AppendLine();
+                // Add keyboard definition.
+                markdown
+                    .AppendLine("## Keyboard")
+                    .AppendLine()
+                    .AppendLine("---")
+                    .AppendLine()
+                    .AppendLine("|Name|Binding Type|Key|Category|Title|Description|")
+                    .AppendLine("|---|---|---|---|---|---|");
+                MarkupSource(markdown, Configuration.Keyboard.Bindings);
+                markdown.AppendLine();
+                // Add mouse definition.
+                markdown
+                    .AppendLine("## Mouse")
+                    .AppendLine()
+                    .AppendLine("---")
+                    .AppendLine()
+                    .AppendLine("|Name|Binding Type|Key|Category|Title|Description|")
+                    .AppendLine("|---|---|---|---|---|---|");
+                MarkupSource(markdown, Configuration.Mouse.Bindings);
+                markdown.AppendLine();
+                // Add gamepad definition.
+                markdown
+                    .AppendLine("## Gamepad")
+                    .AppendLine()
+                    .AppendLine("---")
+                    .AppendLine()
+                    .AppendLine("|Name|Binding Type|Key|Category|Title|Description|")
+                    .AppendLine("|---|---|---|---|---|---|");
+                MarkupSource(markdown, Configuration.Gamepad.Bindings);
+                markdown.AppendLine();
+                File.WriteAllText(dialog.FileName, markdown.ToString());
+                return true;
+            }
+            else return false;
+        }
+
+        private static void MarkupSource<T>(StringBuilder markdown, IEnumerable<KeyBinding<T>> bindings)
+        {
+            foreach (var binding in bindings)
+            {
+                if (binding.ClickAction != null && !binding.ClickAction.IsDeleted)
+                    AppendAction(markdown, binding.ClickAction, binding.KeysSequence, "Click");
+                if (binding.HoldAction != null && !binding.HoldAction.IsDeleted)
+                    AppendAction(markdown, binding.HoldAction, binding.KeysSequence, "Hold");
+                if (binding.DoubleClickAction != null && !binding.DoubleClickAction.IsDeleted)
+                    AppendAction(markdown, binding.DoubleClickAction, binding.KeysSequence, "DoubleClick");
+                if (binding.SequenceNextBindings.Any())
+                {
+                    MarkupSource(markdown, binding.SequenceNextBindings);
+                }
+            }
+        }
+
+        private static void AppendAction(StringBuilder builder, ActionInfo action, string keys, string type)
+        {
+            builder
+                .Append('|').Append(action.Name)
+                .Append('|').Append(type)
+                .Append('|').Append(keys)
+                .Append('|').Append(action.Category)
+                .Append('|').Append(action.Title)
+                .Append('|').Append(action.Description).AppendLine("|");
         }
 
         private void OnPropertyChanged(string propertyName)

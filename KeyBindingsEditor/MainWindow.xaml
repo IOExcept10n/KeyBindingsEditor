@@ -15,6 +15,13 @@
     <Window.Resources>
         <ViewModel:NullEqualsConverter x:Key="NullChecker" />
     </Window.Resources>
+    <Window.CommandBindings>
+        <CommandBinding Command="{x:Static local:MainWindow.SaveCommand}" Executed="SaveConfigHandled"/>
+        <CommandBinding Command="{x:Static local:MainWindow.OpenCommand}" Executed="OpenConfigHandled"/>
+        <CommandBinding Command="{x:Static local:MainWindow.SaveAsCommand}" Executed="SaveConfigAsHandled"/>
+        <CommandBinding Command="{x:Static local:MainWindow.RemoveSelectionCommand}" Executed="RemoveSelectionHandled"/>
+        <CommandBinding Command="{x:Static local:MainWindow.NewFileCommand}" Executed="NewFileHandled"/>
+    </Window.CommandBindings>
     <Grid Background="#B0000000">
         <ui:NavigationView
             x:Name="NavView"
@@ -62,6 +69,7 @@
                             <MenuItem Header="Conf_iguration" Foreground="White">
                                 <MenuItem Header="_Export categories" Name="ExportConfiguration" Click="ExportConfiguration_Click" />
                                 <MenuItem Header="I_mport categories" Name="Import" Click="Import_Click" />
+                                <MenuItem Header="Create _Markdown documentation table" Name="CreateMarkdown" Click="CreateMarkdown_Click"/>
                             </MenuItem>
                         </Menu>
                     </DockPanel>
@@ -183,6 +191,9 @@
                                 <Button IsEnabled="False" x:Name="Sequence3" Content="{Binding SequenceThird.Key}" Click="Sequence3_Click"
                                         Background="#A09955BB" HorizontalAlignment="Stretch" Margin="2" Height="30" />
                             </StackPanel>
+
+                            <Button IsEnabled="True" x:Name="DeleteSequence" Content="Delete sequence" Click="DeleteSequence_Click" 
+                                    Background="#A0B21234" HorizontalAlignment="Stretch" VerticalAlignment="Top" Margin="2" Height="30"/>
                         </StackPanel>
                     </Grid>
                 </Grid>

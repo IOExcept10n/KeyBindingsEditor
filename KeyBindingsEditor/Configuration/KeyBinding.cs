@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Linq;
 
 namespace KeyBindingsEditor.Configuration
 {
@@ -31,6 +32,8 @@ namespace KeyBindingsEditor.Configuration
             get
             {
                 ThrowIfNotActivated();
+                if (clickAction?.IsDeleted == true)
+                    clickAction = null;
                 return clickAction;
             }
 
@@ -47,6 +50,8 @@ namespace KeyBindingsEditor.Configuration
             get
             {
                 ThrowIfNotActivated();
+                if (holdAction?.IsDeleted == true)
+                    holdAction = null;
                 return holdAction;
             }
             set
@@ -62,6 +67,8 @@ namespace KeyBindingsEditor.Configuration
             get
             {
                 ThrowIfNotActivated();
+                if (doubleClickAction?.IsDeleted == null)
+                    doubleClickAction = null;
                 return doubleClickAction;
             }
             set
@@ -117,7 +124,32 @@ namespace KeyBindingsEditor.Configuration
             }
         }
 
+        [JsonIgnore]
+        public string KeysSequence
+        {
+            get
+            {
+                if (Parent != null)
+                {
+                    Stack<KeyBinding<TKeyType>> parents = new();
+                    var test = this;
+                    while (test != null)
+                    {
+                        parents.Push(test);
+                        test = test.Parent;
+                    }
+                    return string.Join('+', parents.Select(x => x.Key));
+                }
+                return Key?.ToString() ?? string.Empty;
+            }
+        }
+
         public event PropertyChangedEventHandler? PropertyChanged;
+
+        public void DeleteSequence()
+        {
+            SequenceNextBindings.Clear();
+        }
 
         public bool AnyParents(Func<KeyBinding<TKeyType>, bool> predicate)
         {

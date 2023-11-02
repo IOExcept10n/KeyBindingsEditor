@@ -4,6 +4,7 @@ using ModernWpf.Controls;
 using System;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 
 namespace KeyBindingsEditor
 {
@@ -16,9 +17,20 @@ namespace KeyBindingsEditor
         private bool suppressCurrentUpdate;
         private int bindingPosition = 1;
 
+        public static RoutedCommand SaveCommand = new RoutedCommand("SaveConfig", typeof(MainWindow));
+        public static RoutedCommand OpenCommand = new RoutedCommand("OpenConfig", typeof(MainWindow));
+        public static RoutedCommand NewFileCommand = new RoutedCommand("NewConfig", typeof(MainWindow));
+        public static RoutedCommand SaveAsCommand = new RoutedCommand("SaveConfigAs", typeof(MainWindow));
+        public static RoutedCommand RemoveSelectionCommand = new RoutedCommand("RemoveSelection", typeof(MainWindow));
+
         public MainWindow()
         {
             InitializeComponent();
+            SaveCommand.InputGestures.Add(new KeyGesture(Key.S, ModifierKeys.Control));
+            OpenCommand.InputGestures.Add(new KeyGesture(Key.O, ModifierKeys.Control));
+            SaveAsCommand.InputGestures.Add(new KeyGesture(Key.S, ModifierKeys.Control | ModifierKeys.Shift));
+            RemoveSelectionCommand.InputGestures.Add(new KeyGesture(Key.Escape));
+            NewFileCommand.InputGestures.Add(new KeyGesture(Key.N, ModifierKeys.Control));
             context = EditorViewModel.Instance = (EditorViewModel)DataContext;
             context.PropertyChanged += Instance_PropertyChanged;
             Closing += MainWindow_Closing;
@@ -60,13 +72,17 @@ namespace KeyBindingsEditor
                 }
                 ClickCategory.SelectedItem = selected.ClickAction?.GetCategory(context.Configuration.CategoryManager);
                 ClickAction.SelectedItem = selected.ClickAction;
-                IsClickEnabled.IsChecked = selected.ClickAction != null;
+                IsClickEnabled.IsChecked = true;
                 DoubleClickCategory.SelectedItem = selected.DoubleClickAction?.GetCategory(context.Configuration.CategoryManager);
                 DoubleClickAction.SelectedItem = selected.DoubleClickAction;
                 IsDoubleClickEnabled.IsChecked = selected.DoubleClickAction != null;
                 HoldCategory.SelectedItem = selected.HoldAction?.GetCategory(context.Configuration.CategoryManager);
                 HoldAction.SelectedItem = selected.HoldAction;
                 IsHoldEnabled.IsChecked = selected.HoldAction != null;
+            }
+            else
+            {
+                IsClickEnabled.IsChecked = false;
             }
             if (context.SequenceFirst != null)
             {
@@ -87,6 +103,7 @@ namespace KeyBindingsEditor
         public void OpenSelectedPage()
         {
             context.SequenceFirst = context.SequenceSecond = context.SequenceThird = null;
+            bindingPosition = 1;
             switch (NavView.MenuItems.IndexOf(NavView.SelectedItem))
             {
                 // Keyboard
@@ -248,12 +265,88 @@ namespace KeyBindingsEditor
 
         private void ExportConfiguration_Click(object sender, RoutedEventArgs e)
         {
-            context.ExportConfiguration();
+            if (context.ExportConfiguration())
+            {
+                MessageBox.Show("The configuration has been successfully exported.");
+            }
         }
 
         private void Import_Click(object sender, RoutedEventArgs e)
         {
-            context.ImportConfiguration();
+            if (context.ImportConfiguration())
+            {
+                MessageBox.Show("The configuration has been successfully imported.");
+            }
+        }
+
+        private void DeleteSequence_Click(object sender, RoutedEventArgs e)
+        {
+            switch (bindingPosition)
+            {
+                case 1:
+                    {
+                        context.SequenceFirst?.DeleteSequence();
+                        context.SequenceFirst = context.SequenceSecond = context.SequenceThird = null;
+                        context.SelectedBinding = null;
+                        context.CombinationSource = null;
+                        bindingPosition = 1;
+                    }
+                    break;
+                case 2:
+                    {
+                        context.SequenceSecond?.DeleteSequence();
+                        context.SequenceFirst = context.SequenceSecond = context.SequenceThird = null;
+                        context.SelectedBinding = null;
+                        context.CombinationSource = null;
+                        bindingPosition = 1;
+                    }
+                    break;
+                case 3:
+                    {
+                        context.SequenceThird?.DeleteSequence();
+                        context.SequenceSecond = context.SequenceThird = null;
+                        context.SelectedBinding = null;
+                        context.CombinationSource = context.SequenceFirst;
+                        bindingPosition = 2;
+                    }
+                    break;
+            }
+        }
+
+        private void OpenConfigHandled(object sender, ExecutedRoutedEventArgs e)
+        {
+            context.OpenConfiguration();
+        }
+
+        private void SaveConfigHandled(object sender, ExecutedRoutedEventArgs e)
+        {
+            context.Save();
+        }
+
+        private void SaveConfigAsHandled(object sender, ExecutedRoutedEventArgs e)
+        {
+            context.SaveAs();
+        }
+
+        private void NewFileHandled(object sender, ExecutedRoutedEventArgs e)
+        {
+            context.CreateConfiguration();
+        }
+
+        private void RemoveSelectionHandled(object sender, ExecutedRoutedEventArgs e)
+        {
+            context.SequenceFirst = context.SequenceSecond = context.SequenceThird = null;
+            context.SelectedBinding = null;
+            context.CombinationSource = null;
+            bindingPosition = 1;
+        }
+
+        private void CreateMarkdown_Click(object sender, RoutedEventArgs e)
+        {
+            if (EditorViewModel.Instance.CreateMarkdown())
+            {
+                MessageBox.Show("Markdown creation has been completed successfully.");
+            }
         }
     }
 }

@@ -13,6 +13,7 @@ namespace KeyBindingsEditor.Pages
     public partial class KeyboardLayout : Page
     {
         private readonly Dictionary<Keys, (Button Button, string Text)> buttons;
+        private Button? previousButton;
 
         public KeyboardLayout()
         {
@@ -150,6 +151,7 @@ namespace KeyBindingsEditor.Pages
 
         private void ReloadLayout()
         {
+            previousButton = null;
             BindingVisualizer.VisualizeLayout(buttons, EditorViewModel.Instance);
         }
 
@@ -167,10 +169,19 @@ namespace KeyBindingsEditor.Pages
                 bindings.Add(binding);
             }
             instance.SelectedBinding = binding;
+            if (previousButton != null && bindings != null)
+            {
+                var oldPair = buttons.First(x => x.Value.Button == previousButton);
+                var previousBinding = bindings.First(x => x.Key == oldPair.Key);
+                if (previousBinding != null)
+                BindingVisualizer.ApplyButtonLayout(previousButton, oldPair.Value.Text, previousBinding, EditorViewModel.Instance);
+            }
+            BindingVisualizer.ApplyButtonLayout(bindingButton, pair.Value.Text, binding, EditorViewModel.Instance);
             binding.PropertyChanged += (s, e) =>
             {
                 BindingVisualizer.ApplyButtonLayout(bindingButton, pair.Value.Text, binding, EditorViewModel.Instance);
             };
+            previousButton = bindingButton;
         }
     }
 }

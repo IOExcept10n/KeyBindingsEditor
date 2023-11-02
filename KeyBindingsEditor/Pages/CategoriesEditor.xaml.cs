@@ -37,7 +37,7 @@ namespace KeyBindingsEditor.Pages
             var categories = EditorViewModel.Instance.Configuration.Categories;
             categories.Add(new()
             {
-                Name = $"Category {categories.Count + 1}",
+                Name = $"Category{categories.Count + 1}",
                 Color = Colors.BlueViolet
             });
         }
@@ -137,19 +137,15 @@ namespace KeyBindingsEditor.Pages
 
         private void AddActionButton_Click(object sender, RoutedEventArgs e)
         {
-            var category = EditorViewModel.Instance.Configuration.Categories[currentCategoryIndex];
-            category.Actions.Add(new()
-            {
-                Category = category.Name,
-                Name = "New action",
-                Description = "The description here"
-            });
+            AddAndSelectNewAction();
         }
 
         private void RemoveCategoryButton_Click(object sender, RoutedEventArgs e)
         {
             if (MessageBox.Show("Are you sure you want to delete this category?", "Accept delete", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
             {
+                var category = EditorViewModel.Instance.Configuration.Categories[currentCategoryIndex];
+                category.Delete();
                 EditorViewModel.Instance.Configuration.Categories.RemoveAt(currentCategoryIndex);
                 currentCategoryIndex = -1;
             }
@@ -160,6 +156,7 @@ namespace KeyBindingsEditor.Pages
             if (CurrentCategory != null)
             {
                 ActionInfo context = (ActionInfo)((Button)sender).DataContext;
+                context.Delete();
                 CurrentCategory.Actions.Remove(context);
             }
         }
@@ -175,6 +172,60 @@ namespace KeyBindingsEditor.Pages
                     category!.Color = picker.SelectedColor;
                 }
             }
+        }
+
+        private void CategoryNameBox_KeyDown(object sender, System.Windows.Input.KeyEventArgs e)
+        {
+            if (e.Key == System.Windows.Input.Key.Enter)
+            {
+                AddAndSelectNewAction();
+            }
+        }
+
+        private void TextBox_LostFocus(object sender, RoutedEventArgs e)
+        {
+            ActionInfo context = (ActionInfo)((TextBox)sender).DataContext;
+            if (context.Description == "<Sample Description>" || string.IsNullOrEmpty(context.Description))
+            {
+                context.Description = context.Name;
+            }
+            if (context.Title == "<New Action>" || string.IsNullOrEmpty(context.Title))
+            {
+                context.Title = context.Name;
+            }
+        }
+
+        private void TextBox_KeyDown(object sender, System.Windows.Input.KeyEventArgs e)
+        {
+            if (e.Key == System.Windows.Input.Key.Enter)
+            {
+                AddAndSelectNewAction();
+            }
+        }
+
+        private void AddAndSelectNewAction()
+        {
+            var category = EditorViewModel.Instance.Configuration.Categories[currentCategoryIndex];
+            ActionInfo action = new()
+            {
+                Category = category.Name,
+                Name = $"ActionKey{category.Actions.Count + 1}",
+                Title = "<New Action>",
+                Description = "<Sample Description>"
+            };
+            category.Actions.Add(action);
+            ListBoxItem selectedItem = (ListBoxItem)CategoriesPanel.ItemContainerGenerator.ContainerFromItem(category);
+            ContentPresenter presenter = FindVisualChild<ContentPresenter>(selectedItem);
+            DataTemplate template = presenter.ContentTemplate;
+            ListBox actionsPanel = (ListBox)template.FindName("ActionsPanel", presenter);
+            actionsPanel.SelectedIndex = category.Actions.Count - 1;
+            actionsPanel.UpdateLayout();
+            selectedItem = (ListBoxItem)actionsPanel.ItemContainerGenerator.ContainerFromItem(action);
+            presenter = FindVisualChild<ContentPresenter>(selectedItem);
+            template = presenter.ContentTemplate;
+            TextBox actionNameBox = (TextBox)template.FindName("ActionNameBox", presenter);
+            actionNameBox.Focus();
+            actionNameBox.SelectAll();
         }
     }
 }

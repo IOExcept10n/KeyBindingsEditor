@@ -12,5 +12,7 @@ namespace KeyBindingsEditor.Configuration
         public ActionInfo? DoubleClickAction { get; set; }
 
         public IEnumerable<IKeyBinding> NextBindings { get; }
+
+        public void DeleteSequence();
     }
 }
