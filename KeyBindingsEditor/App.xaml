@@ -16,6 +16,9 @@
             <ImageBrush x:Key="SchemaMouse" ImageSource="Assets/Mouseka.png" Stretch="UniformToFill" />
             <ImageBrush x:Key="SchemaGamepad" ImageSource="Assets/Gamepad.png" Stretch="UniformToFill" />
             <ViewModel:EditorViewModel x:Key="Editor" x:Name="EditorInstance" />
+            <ViewModel:CollectionConstraintConverter x:Key="CollectionLayersConstraint" />
+            <ViewModel:CollectionConstraintUpConverter x:Key="CollectionLayersUpConstraint" />
+            <ViewModel:CollectionConstraintDownConverter x:Key="CollectionLayersDownConstraint" />
         </ResourceDictionary>
     </Application.Resources>
 </Application>

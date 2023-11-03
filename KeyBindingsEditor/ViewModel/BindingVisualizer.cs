@@ -1,6 +1,7 @@
 ﻿using KeyBindingsEditor.Configuration;
 using KeyBindingsEditor.Utils;
 using System.Collections.Generic;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -126,15 +127,33 @@ namespace KeyBindingsEditor.ViewModel
                 btn.Content = button.Value.Text;
                 btn.Background = new SolidColorBrush(Color.FromArgb(0x88, 50, 50, 50));
                 btn.Foreground = new SolidColorBrush(Colors.White);
-                btn.IsEnabled = !editor.CurrentCombinationContains(button.Key);
+                btn.IsEnabled = !editor.CurrentCombinationContains(button.Key) && editor.LayersContext?.Any(x => x.Enabled) == true;
                 btn.Padding = new Thickness();
                 btn.ToolTip = null;
             }
-            foreach (var binding in editor.BindingsContext!)
+            if (editor.CombinationSource != null)
             {
-                if (binding is KeyBinding<T> keyBinding && buttons.TryGetValue(keyBinding.Key, out var button))
+                foreach (var binding in editor.BindingsContext!)
                 {
-                    ApplyButtonLayout(button.Button, button.Text, keyBinding, editor);
+                    if (binding is KeyBinding<T> keyBinding && buttons.TryGetValue(keyBinding.Key, out var button))
+                    {
+                        ApplyButtonLayout(button.Button, button.Text, keyBinding, editor);
+                    }
+                }
+            }
+            else if (editor.LayersContext != null)
+            {
+                // Reverse layers to draw the first layer as the top-layer.
+                foreach (var layer in editor.LayersContext.Reverse())
+                {
+                    if (layer.Enabled)
+                        foreach (var binding in layer.Bindings)
+                        {
+                            if (binding is KeyBinding<T> keyBinding && buttons.TryGetValue(keyBinding.Key, out var button))
+                            {
+                                ApplyButtonLayout(button.Button, button.Text, keyBinding, editor);
+                            }
+                        }
                 }
             }
         }

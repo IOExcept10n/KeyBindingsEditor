@@ -1,6 +1,7 @@
 ﻿using KeyBindingsEditor.Configuration;
 using Microsoft.Win32;
 using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -35,6 +36,8 @@ namespace KeyBindingsEditor.ViewModel
         private IKeyBinding? sequenceThird;
         private IKeyBinding? sequenceFirst;
         private IKeyBinding? sequenceSecond;
+        private IEnumerable<IBindingsLayer>? layersContext;
+        private IBindingsLayer? selectedLayer;
 
         public static EditorViewModel Instance { get; set; } = null!;
 
@@ -65,6 +68,20 @@ namespace KeyBindingsEditor.ViewModel
             {
                 selectedBinding = value;
                 OnPropertyChanged(nameof(SelectedBinding));
+            }
+        }
+
+        public IBindingsLayer? SelectedLayer
+        {
+            get => selectedLayer;
+            set
+            {
+                selectedLayer = value;
+                if (combinationSource == null)
+                {
+                    BindingsContext = selectedLayer?.Bindings;
+                }
+                OnPropertyChanged(nameof(SelectedLayer));
             }
         }
 
@@ -122,15 +139,29 @@ namespace KeyBindingsEditor.ViewModel
                 }
                 else
                 {
-                    BindingsContext = currentEditorType switch
+                    LayersContext = currentEditorType switch
                     {
-                        EditorInputType.Keyboard => Configuration.Keyboard.Bindings,
-                        EditorInputType.Mouse => Configuration.Mouse.Bindings,
-                        EditorInputType.Gamepad => Configuration.Gamepad.Bindings,
+                        EditorInputType.Keyboard => Configuration.Keyboard.Layers,
+                        EditorInputType.Mouse => Configuration.Mouse.Layers,
+                        EditorInputType.Gamepad => Configuration.Gamepad.Layers,
                         _ => null,
                     };
                 }
                 OnPropertyChanged(nameof(CombinationSource));
+            }
+        }
+
+        public IEnumerable<IBindingsLayer>? LayersContext
+        {
+            get => layersContext;
+            set
+            {
+                layersContext = value;
+                if (combinationSource == null)
+                {
+                    BindingsContext = SelectedLayer?.Bindings ?? layersContext?.First().Bindings;
+                }
+                OnPropertyChanged(nameof(LayersContext));
             }
         }
 
@@ -195,9 +226,104 @@ namespace KeyBindingsEditor.ViewModel
 
         public event PropertyChangedEventHandler? PropertyChanged;
 
+        public event EventHandler? ReloadTrigger;
+
         public EditorViewModel()
         {
             CreateConfiguration();
+        }
+
+        public void AddLayer()
+        {
+            if (LayersContext != null)
+            {
+                switch (CurrentEditorType)
+                {
+                    case EditorInputType.Keyboard:
+                        {
+                            var keyLayers = LayersContext as ObservableCollection<BindingsLayer<Keys>>;
+                            keyLayers?.Insert(0, new());
+                        }
+                        break;
+                    case EditorInputType.Mouse:
+                        {
+                            var keyLayers = LayersContext as ObservableCollection<BindingsLayer<MouseButtons>>;
+                            keyLayers?.Insert(0, new());
+                        }
+                        break;
+                    case EditorInputType.Gamepad:
+                        {
+                            var keyLayers = LayersContext as ObservableCollection<BindingsLayer<GamepadButtons>>;
+                            keyLayers?.Insert(0, new());
+                        }
+                        break;
+                }
+                SelectedLayer = LayersContext.First();
+            }
+        }
+
+        public void SwapLayers(int layerPosition, int shift)
+        {
+            if (LayersContext != null)
+            {
+                switch (CurrentEditorType)
+                {
+                    case EditorInputType.Keyboard:
+                        {
+                            var keyLayers = LayersContext as ObservableCollection<BindingsLayer<Keys>>;
+                            SwapLayers(keyLayers, layerPosition, shift);
+                        }
+                        break;
+                    case EditorInputType.Mouse:
+                        {
+                            var keyLayers = LayersContext as ObservableCollection<BindingsLayer<MouseButtons>>;
+                            SwapLayers(keyLayers, layerPosition, shift);
+                        }
+                        break;
+                    case EditorInputType.Gamepad:
+                        {
+                            var keyLayers = LayersContext as ObservableCollection<BindingsLayer<GamepadButtons>>;
+                            SwapLayers(keyLayers, layerPosition, shift);
+                        }
+                        break;
+                }
+            }
+        }
+        
+        private static void SwapLayers<T>(ObservableCollection<BindingsLayer<T>>? layers, int position, int shift)
+        {
+            if (layers == null || position < 0 || position >= layers.Count || position + shift < 0 || position + shift >= layers.Count)
+                return;
+            (layers[position], layers[position + shift]) = (layers[position + shift], layers[position]);
+        }
+
+        public void DeleteLayer(int index)
+        {
+            if (LayersContext == null || index < 0 || index >= LayersContext.Count())
+                return;
+            switch (CurrentEditorType)
+            {
+                case EditorInputType.Keyboard:
+                    {
+                        (LayersContext as ObservableCollection<BindingsLayer<Keys>>)?.RemoveAt(index);
+                    }
+                    break;
+                case EditorInputType.Mouse:
+                    {
+                        (LayersContext as ObservableCollection<BindingsLayer<MouseButtons>>)?.RemoveAt(index);
+                    }
+                    break;
+                case EditorInputType.Gamepad:
+                    {
+                        (LayersContext as ObservableCollection<BindingsLayer<GamepadButtons>>)?.RemoveAt(index);
+                    }
+                    break;
+            }
+        }
+
+        public void ReloadLayout()
+        {
+            ReloadTrigger?.Invoke(this, EventArgs.Empty);
         }
 
         public bool CurrentCombinationContains<T>(T keys)
@@ -363,8 +489,8 @@ namespace KeyBindingsEditor.ViewModel
                     .AppendLine("---")
                     .AppendLine()
                     .AppendLine("|Name|Binding Type|Key|Category|Title|Description|")
-                    .AppendLine("|---|---|---|---|---|---|");
-                MarkupSource(markdown, Configuration.Keyboard.Bindings);
+                    .AppendLine("|---|---|:---:|---|---|---|");
+                MarkupLayer(markdown, Configuration.Keyboard.Layers);
                 markdown.AppendLine();
                 // Add mouse definition.
                 markdown
@@ -373,8 +499,8 @@ namespace KeyBindingsEditor.ViewModel
                     .AppendLine("---")
                     .AppendLine()
                     .AppendLine("|Name|Binding Type|Key|Category|Title|Description|")
-                    .AppendLine("|---|---|---|---|---|---|");
-                MarkupSource(markdown, Configuration.Mouse.Bindings);
+                    .AppendLine("|---|---|:---:|---|---|---|");
+                MarkupLayer(markdown, Configuration.Mouse.Layers);
                 markdown.AppendLine();
                 // Add gamepad definition.
                 markdown
@@ -383,13 +509,22 @@ namespace KeyBindingsEditor.ViewModel
                     .AppendLine("---")
                     .AppendLine()
                     .AppendLine("|Name|Binding Type|Key|Category|Title|Description|")
-                    .AppendLine("|---|---|---|---|---|---|");
-                MarkupSource(markdown, Configuration.Gamepad.Bindings);
+                    .AppendLine("|---|---|:---:|---|---|---|");
+                MarkupLayer(markdown, Configuration.Gamepad.Layers);
                 markdown.AppendLine();
                 File.WriteAllText(dialog.FileName, markdown.ToString());
                 return true;
             }
             else return false;
+        }
+        
+        private static void MarkupLayer<T>(StringBuilder markdown, IEnumerable<BindingsLayer<T>> layers)
+        {
+            foreach (var layer in layers)
+            {
+                MarkupSource(markdown, layer.Bindings);
+                markdown.AppendLine("| --- | --- | --- | --- | --- | --- |");
+            }
         }
 
         private static void MarkupSource<T>(StringBuilder markdown, IEnumerable<KeyBinding<T>> bindings)
@@ -415,7 +550,7 @@ namespace KeyBindingsEditor.ViewModel
                 .Append('|').Append(action.Name)
                 .Append('|').Append(type)
                 .Append('|').Append(keys)
-                .Append('|').Append(action.Category)
+                .Append('|').Append('#').Append(action.Category)
                 .Append('|').Append(action.Title)
                 .Append('|').Append(action.Description).AppendLine("|");
         }

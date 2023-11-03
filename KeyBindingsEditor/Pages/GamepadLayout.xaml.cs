@@ -10,15 +10,26 @@ namespace KeyBindingsEditor.Pages
     /// <summary>
     /// Логика взаимодействия для GamepadLayout.xaml
     /// </summary>
-    public partial class GamepadLayout : Page
+    public partial class GamepadLayout : GamepadPageBase
     {
-        private readonly Dictionary<GamepadButtons, (Button Button, string Text)> buttons;
-        private Button? previousButton;
-
         public GamepadLayout()
         {
             InitializeComponent();
-            buttons = new()
+            Initialize();
+        }
+
+        protected internal override EditorInputType EditorInputType => EditorInputType.Gamepad;
+
+        internal override IEnumerable<IBindingsLayer> Layers => Editor.Configuration.Gamepad.Layers;
+
+        public void GamepadKey_Click(object sender, RoutedEventArgs e)
+        {
+            OnKeyClick(sender);
+        }
+
+        protected override Dictionary<GamepadButtons, (Button Button, string Text)> FillButtons()
+        {
+            return new()
             {
                 [GamepadButtons.A] = (A, "A"),
                 [GamepadButtons.B] = (B, "B"),
@@ -37,62 +48,6 @@ namespace KeyBindingsEditor.Pages
                 [GamepadButtons.PadUp] = (Up_DPad, "↑"),
                 [GamepadButtons.PadDown] = (Down_DPad, "↓"),
             };
-            EditorViewModel.Instance.PropertyChanged += ViewModel_PropertyChanged;
-            EditorViewModel.Instance.BindingsContext = EditorViewModel.Instance.Configuration.Gamepad.Bindings;
-        }
-
-        private void ViewModel_PropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e)
-        {
-            if (EditorViewModel.Instance.CurrentEditorType != EditorInputType.Gamepad)
-                return;
-            if (e.PropertyName == nameof(EditorViewModel.Configuration))
-            {
-                EditorViewModel.Instance.BindingsContext = EditorViewModel.Instance.Configuration.Gamepad.Bindings;
-            }
-            if (e.PropertyName == nameof(EditorViewModel.Configuration) || e.PropertyName == nameof(EditorViewModel.BindingsContext))
-            {
-                ReloadLayout();
-            }
-        }
-
-        private void OnLoaded(object sender, RoutedEventArgs e)
-        {
-            ReloadLayout();
-        }
-
-        private void ReloadLayout()
-        {
-            previousButton = null;
-            BindingVisualizer.VisualizeLayout(buttons, EditorViewModel.Instance);
-        }
-
-        private void GamepadKey_Click(object sender, RoutedEventArgs e)
-        {
-            var bindingButton = (Button)sender;
-            var instance = EditorViewModel.Instance;
-            var pair = buttons.First(x => x.Value.Button == bindingButton);
-            var key = pair.Key;
-            var bindings = (ICollection<KeyBinding<GamepadButtons>>)instance.BindingsContext!;
-            var binding = bindings.FirstOrDefault(x => x.Key == key);
-            if (binding == null)
-            {
-                binding = new KeyBinding<GamepadButtons>() { Key = key, Parent = EditorViewModel.Instance.CombinationSource as KeyBinding<GamepadButtons> };
-                bindings.Add(binding);
-            }
-            instance.SelectedBinding = binding;
-            if (previousButton != null && bindings != null)
-            {
-                var oldPair = buttons.First(x => x.Value.Button == previousButton);
-                var previousBinding = bindings.First(x => x.Key == oldPair.Key);
-                if (previousBinding != null)
-                    BindingVisualizer.ApplyButtonLayout(previousButton, oldPair.Value.Text, previousBinding, EditorViewModel.Instance);
-            }
-            BindingVisualizer.ApplyButtonLayout(bindingButton, pair.Value.Text, binding, EditorViewModel.Instance);
-            binding.PropertyChanged += (s, e) =>
-            {
-                BindingVisualizer.ApplyButtonLayout(bindingButton, pair.Value.Text, binding, EditorViewModel.Instance);
-            };
-            previousButton = bindingButton;
         }
     }
 }
