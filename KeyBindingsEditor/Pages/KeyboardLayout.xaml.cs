@@ -10,15 +10,21 @@ namespace KeyBindingsEditor.Pages
     /// <summary>
     /// Логика взаимодействия для KeyboardLayout.xaml
     /// </summary>
-    public partial class KeyboardLayout : Page
+    public partial class KeyboardLayout : KeyboardPageBase
     {
-        private readonly Dictionary<Keys, (Button Button, string Text)> buttons;
-        private Button? previousButton;
-
         public KeyboardLayout()
         {
             InitializeComponent();
-            buttons = new Dictionary<Keys, (Button, string)>()
+            Initialize();
+        }
+
+        protected internal override EditorInputType EditorInputType => EditorInputType.Keyboard;
+
+        internal override IEnumerable<IBindingsLayer> Layers => Editor.Configuration.Keyboard.Layers;
+
+        protected override Dictionary<Keys, (Button Button, string Text)> FillButtons()
+        {
+            return new Dictionary<Keys, (Button, string)>()
             {
                 [Keys.A] = (A_key, "A"),
                 [Keys.B] = (B_key, "B"),
@@ -125,63 +131,11 @@ namespace KeyBindingsEditor.Pages
                 [Keys.Up] = (ArrowUp_key, "↑"),
                 [Keys.Down] = (ArrowDown_key, "↓"),
             };
-            Loaded += OnLoaded;
-            EditorViewModel.Instance.PropertyChanged += ViewModel_PropertyChanged;
-            EditorViewModel.Instance.BindingsContext = EditorViewModel.Instance.Configuration.Keyboard.Bindings;
-        }
-
-        private void ViewModel_PropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e)
-        {
-            if (EditorViewModel.Instance.CurrentEditorType != EditorInputType.Keyboard)
-                return;
-            if (e.PropertyName == nameof(EditorViewModel.Configuration))
-            {
-                EditorViewModel.Instance.BindingsContext = EditorViewModel.Instance.Configuration.Keyboard.Bindings;
-            }
-            if (e.PropertyName == nameof(EditorViewModel.Configuration) || e.PropertyName == nameof(EditorViewModel.BindingsContext))
-            {
-                ReloadLayout();
-            }
-        }
-
-        private void OnLoaded(object sender, RoutedEventArgs e)
-        {
-            ReloadLayout();
-        }
-
-        private void ReloadLayout()
-        {
-            previousButton = null;
-            BindingVisualizer.VisualizeLayout(buttons, EditorViewModel.Instance);
         }
 
         public void Key_Click(object sender, RoutedEventArgs e)
         {
-            var bindingButton = (Button)sender;
-            var instance = EditorViewModel.Instance;
-            var pair = buttons.First(x => x.Value.Button == bindingButton);
-            var key = pair.Key;
-            var bindings = (ICollection<KeyBinding<Keys>>)instance.BindingsContext!;
-            var binding = bindings.FirstOrDefault(x => x.Key == key);
-            if (binding == null)
-            {
-                binding = new KeyBinding<Keys>() { Key = key, Parent = EditorViewModel.Instance.CombinationSource as KeyBinding<Keys> };
-                bindings.Add(binding);
-            }
-            instance.SelectedBinding = binding;
-            if (previousButton != null && bindings != null)
-            {
-                var oldPair = buttons.First(x => x.Value.Button == previousButton);
-                var previousBinding = bindings.First(x => x.Key == oldPair.Key);
-                if (previousBinding != null)
-                BindingVisualizer.ApplyButtonLayout(previousButton, oldPair.Value.Text, previousBinding, EditorViewModel.Instance);
-            }
-            BindingVisualizer.ApplyButtonLayout(bindingButton, pair.Value.Text, binding, EditorViewModel.Instance);
-            binding.PropertyChanged += (s, e) =>
-            {
-                BindingVisualizer.ApplyButtonLayout(bindingButton, pair.Value.Text, binding, EditorViewModel.Instance);
-            };
-            previousButton = bindingButton;
+            OnKeyClick(sender);
         }
     }
 }

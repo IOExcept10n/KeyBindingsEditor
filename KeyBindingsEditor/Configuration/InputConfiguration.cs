@@ -69,6 +69,10 @@ namespace KeyBindingsEditor.Configuration
             {
                 categories = value;
                 CategoryManager = new(categories);
+                foreach (var category in categories)
+                {
+                    category.Initialize();
+                }
                 OnPropertyChanged(nameof(Categories));
                 categories.CollectionChanged += OnCategoriesUpdated;
             }
@@ -86,19 +90,27 @@ namespace KeyBindingsEditor.Configuration
 
         public InputConfiguration Configure()
         {
-            foreach (var binding in Keyboard.Bindings)
+            foreach (var binding in Keyboard.Layers)
             {
-                binding.Activate(CategoryManager);
+                ConfigureLayer(binding);
             }
-            foreach (var binding in Mouse.Bindings)
+            foreach (var binding in Mouse.Layers)
             {
-                binding.Activate(CategoryManager);
+                ConfigureLayer(binding);
             }
-            foreach (var binding in Gamepad.Bindings)
+            foreach (var binding in Gamepad.Layers)
             {
-                binding.Activate(CategoryManager);
+                ConfigureLayer(binding);
             }
             return this;
+        }
+
+        private void ConfigureLayer<T>(BindingsLayer<T> layer)
+        {
+            foreach (var binding in layer.Bindings)
+            {
+                binding.Activate(CategoryManager);
+            }
         }
 
         public void Save(string fileName)
@@ -128,6 +140,7 @@ namespace KeyBindingsEditor.Configuration
                 case System.Collections.Specialized.NotifyCollectionChangedAction.Add:
                     foreach (GameplayCategory b in e.NewItems!)
                     {
+                        b.Initialize();
                         b.PropertyChanged += PropertyChanged;
                     }
                     break;

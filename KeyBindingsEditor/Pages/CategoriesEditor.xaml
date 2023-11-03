@@ -10,7 +10,9 @@
       d:DesignHeight="450" d:DesignWidth="800"
       Title="CategoriesEditor"
       DataContext="{StaticResource Editor}">
-
+    <Page.CommandBindings>
+        <CommandBinding Command="{x:Static local:CategoriesEditor.NewCategoryCommand}" Executed="CommandBinding_Executed"/>
+    </Page.CommandBindings>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="40" />
@@ -20,7 +22,7 @@
             <Button x:Name="AddCategory" Content="Add category" Background="#D0454589" Margin="4" Click="AddCategory_Click" />
         </StackPanel>
         <ScrollViewer VerticalScrollBarVisibility="Visible" HorizontalScrollBarVisibility="Disabled" Grid.Row="1">
-            <ListBox Background="Transparent" SelectionChanged="ListBoxItem_Selected" x:Name="CategoriesPanel"
+            <ListBox Background="Transparent" SelectionChanged="ListBoxItem_Selected" x:Name="CategoriesPanel" KeyDown="ListBox_KeyDown"
                           d:ItemsSource="{d:SampleData ItemCount=10}" ItemsSource="{Binding Configuration.Categories}">
                 <i1:Interaction.Behaviors>
                     <localUtils:IgnoreMouseWheelBehavior />
@@ -49,7 +51,7 @@
                                 <Button x:Name="AddActionButton" Background="#5044FF22" Height="20" Width="20" Margin="4" Visibility="Collapsed"
                                         Content="&#xE710;" FontSize="16" Padding="1 0" FontFamily="Segoe MDL2 Assets" Click="AddActionButton_Click" />
                                 <TextBox x:Name="CategoryNameBox" Background="Transparent" BorderBrush="Transparent" 
-                                         ToolTip="{Binding RelativeSource={RelativeSource Self}, Path=(Validation.Errors)[0].ErrorContent}"
+                                         ToolTip="{Binding RelativeSource={RelativeSource Self}, Path=(Validation.Errors)/ErrorContent}"
                                          FontSize="16" Width="300" IsEnabled="False" VerticalAlignment="Center" KeyDown="CategoryNameBox_KeyDown">
                                     <TextBox.Text>
                                         <Binding Path="Name">
@@ -89,7 +91,7 @@
                                         <StackPanel Orientation="Horizontal">
                                             <TextBox x:Name="ActionNameBox" ToolTip="{Binding RelativeSource={RelativeSource Self}, Path=(Validation.Errors)[0].ErrorContent}"
                                                      Background="Transparent" BorderBrush="Transparent" FontSize="14" Width="175" Margin="8 2" 
-                                                     LostFocus="TextBox_LostFocus" KeyDown="TextBox_KeyDown">
+                                                     LostFocus="TextBox_LostFocus">
                                                 <TextBox.Text>
                                                     <Binding Path="Name">
                                                         <Binding.ValidationRules>

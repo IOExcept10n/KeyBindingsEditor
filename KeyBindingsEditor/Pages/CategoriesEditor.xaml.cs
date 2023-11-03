@@ -3,6 +3,7 @@ using KeyBindingsEditor.ViewModel;
 using System;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
 
@@ -18,9 +19,12 @@ namespace KeyBindingsEditor.Pages
 
         private bool CurrentCategorySelected => currentCategoryIndex >= 0 && currentCategoryIndex < EditorViewModel.Instance.Configuration.Categories.Count && CurrentCategory != null;
 
+        public static RoutedCommand NewCategoryCommand = new("NewCategory", typeof(CategoriesEditor));
+
         public CategoriesEditor()
         {
             InitializeComponent();
+            NewCategoryCommand.InputGestures.Add(new KeyGesture(Key.Enter, ModifierKeys.Control));
             Loaded += CategoriesEditor_Loaded;
         }
 
@@ -34,12 +38,7 @@ namespace KeyBindingsEditor.Pages
 
         private void AddCategory_Click(object sender, RoutedEventArgs e)
         {
-            var categories = EditorViewModel.Instance.Configuration.Categories;
-            categories.Add(new()
-            {
-                Name = $"Category{categories.Count + 1}",
-                Color = Colors.BlueViolet
-            });
+            CreateNewCategory();
         }
 
         private void ListBoxItem_Selected(object sender, RoutedEventArgs e)
@@ -174,9 +173,9 @@ namespace KeyBindingsEditor.Pages
             }
         }
 
-        private void CategoryNameBox_KeyDown(object sender, System.Windows.Input.KeyEventArgs e)
+        private void CategoryNameBox_KeyDown(object sender, KeyEventArgs e)
         {
-            if (e.Key == System.Windows.Input.Key.Enter)
+            if (e.Key == Key.Enter && (e.KeyboardDevice.Modifiers & ModifierKeys.Shift) == 0)
             {
                 AddAndSelectNewAction();
             }
@@ -195,9 +194,9 @@ namespace KeyBindingsEditor.Pages
             }
         }
 
-        private void TextBox_KeyDown(object sender, System.Windows.Input.KeyEventArgs e)
+        private void ListBox_KeyDown(object sender, KeyEventArgs e)
         {
-            if (e.Key == System.Windows.Input.Key.Enter)
+            if (e.Key == Key.Enter && (e.KeyboardDevice.Modifiers & ModifierKeys.Shift) == 0)
             {
                 AddAndSelectNewAction();
             }
@@ -219,13 +218,38 @@ namespace KeyBindingsEditor.Pages
             DataTemplate template = presenter.ContentTemplate;
             ListBox actionsPanel = (ListBox)template.FindName("ActionsPanel", presenter);
             actionsPanel.SelectedIndex = category.Actions.Count - 1;
-            actionsPanel.UpdateLayout();
-            selectedItem = (ListBoxItem)actionsPanel.ItemContainerGenerator.ContainerFromItem(action);
-            presenter = FindVisualChild<ContentPresenter>(selectedItem);
-            template = presenter.ContentTemplate;
-            TextBox actionNameBox = (TextBox)template.FindName("ActionNameBox", presenter);
-            actionNameBox.Focus();
-            actionNameBox.SelectAll();
+            try
+            {
+                actionsPanel.UpdateLayout();
+                selectedItem = (ListBoxItem)actionsPanel.ItemContainerGenerator.ContainerFromItem(action);
+                presenter = FindVisualChild<ContentPresenter>(selectedItem);
+                template = presenter.ContentTemplate;
+                TextBox actionNameBox = (TextBox)template.FindName("ActionNameBox", presenter);
+                actionNameBox.Focus();
+                actionNameBox.SelectAll();
+            }
+            catch
+            {
+                // If the action was created until the animation is ended, the actions panel can't be updated.
+                // It causes an exception while trying to find the control to focus because it's not yet generated.
+            }
+        }
+
+        private void CommandBinding_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+            CreateNewCategory();
+        }
+
+        private void CreateNewCategory()
+        {
+            var categories = EditorViewModel.Instance.Configuration.Categories;
+            categories.Add(new()
+            {
+                Name = $"Category{categories.Count + 1}",
+                Color = Colors.BlueViolet
+            });
+            CategoriesPanel.UpdateLayout();
+            CategoriesPanel.SelectedIndex = categories.Count - 1;
         }
     }
 }

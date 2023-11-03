@@ -2,9 +2,11 @@
 using KeyBindingsEditor.ViewModel;
 using ModernWpf.Controls;
 using System;
+using System.Collections;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Media;
 
 namespace KeyBindingsEditor
 {
@@ -17,11 +19,11 @@ namespace KeyBindingsEditor
         private bool suppressCurrentUpdate;
         private int bindingPosition = 1;
 
-        public static RoutedCommand SaveCommand = new RoutedCommand("SaveConfig", typeof(MainWindow));
-        public static RoutedCommand OpenCommand = new RoutedCommand("OpenConfig", typeof(MainWindow));
-        public static RoutedCommand NewFileCommand = new RoutedCommand("NewConfig", typeof(MainWindow));
-        public static RoutedCommand SaveAsCommand = new RoutedCommand("SaveConfigAs", typeof(MainWindow));
-        public static RoutedCommand RemoveSelectionCommand = new RoutedCommand("RemoveSelection", typeof(MainWindow));
+        public static RoutedCommand SaveCommand = new("SaveConfig", typeof(MainWindow));
+        public static RoutedCommand OpenCommand = new("OpenConfig", typeof(MainWindow));
+        public static RoutedCommand NewFileCommand = new("NewConfig", typeof(MainWindow));
+        public static RoutedCommand SaveAsCommand = new("SaveConfigAs", typeof(MainWindow));
+        public static RoutedCommand RemoveSelectionCommand = new("RemoveSelection", typeof(MainWindow));
 
         public MainWindow()
         {
@@ -103,6 +105,8 @@ namespace KeyBindingsEditor
         public void OpenSelectedPage()
         {
             context.SequenceFirst = context.SequenceSecond = context.SequenceThird = null;
+            context.SelectedLayer = null;
+            context.LayersContext = null;
             bindingPosition = 1;
             switch (NavView.MenuItems.IndexOf(NavView.SelectedItem))
             {
@@ -335,6 +339,11 @@ namespace KeyBindingsEditor
 
         private void RemoveSelectionHandled(object sender, ExecutedRoutedEventArgs e)
         {
+            ClearSelection();
+        }
+
+        private void ClearSelection()
+        {
             context.SequenceFirst = context.SequenceSecond = context.SequenceThird = null;
             context.SelectedBinding = null;
             context.CombinationSource = null;
@@ -346,6 +355,103 @@ namespace KeyBindingsEditor
             if (EditorViewModel.Instance.CreateMarkdown())
             {
                 MessageBox.Show("Markdown creation has been completed successfully.");
+            }
+        }
+
+        private void LayerEnabled_Checked(object sender, RoutedEventArgs e)
+        {
+            ClearSelection();
+            context.ReloadLayout();
+        }
+
+        private void ListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            ClearSelection();
+            context.SelectedLayer = (IBindingsLayer)LayersListBox.SelectedItem;
+        }
+
+        private void AddLayer_Click(object sender, RoutedEventArgs e)
+        {
+            context.AddLayer();
+            LayersListBox.SelectedIndex = 0;
+            ClearSelection();
+            context.ReloadLayout();
+        }
+
+        private void RenameLayer_Click(object sender, RoutedEventArgs e)
+        {
+            ListBoxItem selectedItem = (ListBoxItem)LayersListBox.ItemContainerGenerator.ContainerFromItem(context.SelectedLayer);
+            ContentPresenter presenter = FindVisualChild<ContentPresenter>(selectedItem);
+            DataTemplate template = presenter.ContentTemplate;
+            TextBox layerName = (TextBox)template.FindName("LayerName", presenter);
+            layerName.IsEnabled = true;
+        }
+
+        private childItem FindVisualChild<childItem>(DependencyObject obj)
+    where childItem : DependencyObject
+        {
+            for (int i = 0; i < VisualTreeHelper.GetChildrenCount(obj); i++)
+            {
+                DependencyObject child = VisualTreeHelper.GetChild(obj, i);
+                if (child != null && child is childItem item)
+                {
+                    return item;
+                }
+                else
+                {
+                    childItem childOfChild = FindVisualChild<childItem>(child!);
+                    if (childOfChild != null)
+                        return childOfChild;
+                }
+            }
+            return null!;
+        }
+
+        private void MoveLayerUp_Click(object sender, RoutedEventArgs e)
+        {
+            ClearSelection();
+            var current = context.SelectedLayer;
+            if (context.LayersContext is not IList list) return;
+            int index = list.IndexOf(current);
+            context.SwapLayers(index, -1);
+            context.ReloadLayout();
+            LayersListBox.SelectedIndex = index - 1;
+        }
+
+        private void MoveLayerDown_Click(object sender, RoutedEventArgs e)
+        {
+            ClearSelection();
+            var current = context.SelectedLayer;
+            if (context.LayersContext is not IList list) return;
+            int index = list.IndexOf(current);
+            context.SwapLayers(index, 1);
+            context.ReloadLayout();
+            LayersListBox.SelectedIndex = index + 1;
+        }
+
+        private void RemoveLayer_Click(object sender, RoutedEventArgs e)
+        {
+            var current = context.SelectedLayer;
+            if (context.LayersContext is not IList list) return;
+            int index = list.IndexOf(current);
+            context.DeleteLayer(index);
+            context.ReloadLayout();
+            LayersListBox.SelectedIndex = 0;
+        }
+
+        private void LayerName_LostFocus(object sender, RoutedEventArgs e)
+        {
+            ((TextBox)sender).IsEnabled = false;
+        }
+
+        private void LayerName_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter)
+            {
+                // Kill logical focus
+                FocusManager.SetFocusedElement(FocusManager.GetFocusScope((TextBox)sender), null);
+                // Kill keyboard focus
+                Keyboard.ClearFocus();
             }
         }
     }

@@ -61,7 +61,7 @@ namespace KeyBindingsEditor.Configuration
         }
 
         [JsonIgnore]
-        public string Error { get; }
+        public string Error { get; } = null!;
 
         public string this[string columnName]
         {
@@ -79,12 +79,21 @@ namespace KeyBindingsEditor.Configuration
             }
         }
 
+        public event PropertyChangedEventHandler? PropertyChanged;
+        
+        public void Initialize()
+        {
+            foreach (var action in Actions)
+            {
+                action.Category = Name;
+            }
+        }
+
         private void OnActionsChanged(object? sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
         {
             OnPropertyChanged(nameof(Actions) + "Content");
         }
 
-        public event PropertyChangedEventHandler? PropertyChanged;
 
         private void OnPropertyChanged(string propertyName)
         {
@@ -159,7 +168,7 @@ namespace KeyBindingsEditor.Configuration
         }
 
         [JsonIgnore]
-        public string Error { get; }
+        public string Error { get; } = null!;
 
         public string this[string columnName]
         {

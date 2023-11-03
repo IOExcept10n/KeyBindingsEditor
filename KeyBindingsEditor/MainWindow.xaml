@@ -4,11 +4,12 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:KeyBindingsEditor"
+        xmlns:localUtils="clr-namespace:KeyBindingsEditor.Utils"
         xmlns:ui="http://schemas.modernwpf.com/2019"
         xmlns:ViewModel="clr-namespace:KeyBindingsEditor.ViewModel" x:Class="KeyBindingsEditor.MainWindow"
         ui:WindowHelper.UseModernWindowStyle="True"
         mc:Ignorable="d"
-        Height="700" Width="1600"
+        Height="730" Width="1600"
         DataContext="{StaticResource Editor}"
         Background="{StaticResource WindowBackground}"
         Title="{Binding WindowTitle}">
@@ -190,10 +191,52 @@
                                 <TextBlock Text="+" HorizontalAlignment="Center" Foreground="White" />
                                 <Button IsEnabled="False" x:Name="Sequence3" Content="{Binding SequenceThird.Key}" Click="Sequence3_Click"
                                         Background="#A09955BB" HorizontalAlignment="Stretch" Margin="2" Height="30" />
+                                <Button IsEnabled="True" x:Name="DeleteSequence" Content="Delete sequence" Click="DeleteSequence_Click" 
+                                        Background="#A0B21234" HorizontalAlignment="Stretch" VerticalAlignment="Top" Margin="2" Height="30"/>
                             </StackPanel>
-
-                            <Button IsEnabled="True" x:Name="DeleteSequence" Content="Delete sequence" Click="DeleteSequence_Click" 
-                                    Background="#A0B21234" HorizontalAlignment="Stretch" VerticalAlignment="Top" Margin="2" Height="30"/>
+                            <localUtils:ResetIsEnabled>
+                                <Grid DataContext="{StaticResource Editor}" IsEnabled="{Binding LayersContext, Converter={StaticResource NullChecker}}">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="35"/>
+                                        <RowDefinition Height="35"/>
+                                        <RowDefinition Height="*"/>
+                                    </Grid.RowDefinitions>
+                                    <TextBlock Text="Layers" HorizontalAlignment="Center" FontSize="20" Foreground="White" Margin="4"/>
+                                    <StackPanel Orientation="Horizontal" Grid.Row="1" DataContext="{Binding SelectedLayer}">
+                                        <Button x:Name="AddLayer" Width="30" Height="30" Padding="0" Click="AddLayer_Click"
+                                            FontFamily="Segoe MDL2 Assets" Content="&#xE710;" Margin="2"/>
+                                        <Button x:Name="RenameLayer" Width="30" Height="30" Padding="0" IsEnabled="{Binding Converter={StaticResource NullChecker}}" Click="RenameLayer_Click"
+                                            FontFamily="Segoe MDL2 Assets" Content="&#xE8AC;" Margin="2"/>
+                                        <Button x:Name="MoveLayerUp" Width="30" Height="30" Padding="0" IsEnabled="{Binding Converter={StaticResource CollectionLayersUpConstraint}}" Click="MoveLayerUp_Click"
+                                            FontFamily="Segoe MDL2 Assets" Content="&#xE74A;" Margin="2"/>
+                                        <Button x:Name="MoveLayerDown" Width="30" Height="30" Padding="0" IsEnabled="{Binding Converter={StaticResource CollectionLayersDownConstraint}}" Click="MoveLayerDown_Click"
+                                            FontFamily="Segoe MDL2 Assets" Content="&#xE74B;" Margin="2"/>
+                                        <Button x:Name="RemoveLayer" Width="30" Height="30" Padding="0" IsEnabled="{Binding Converter={StaticResource CollectionLayersConstraint}}" Click="RemoveLayer_Click"
+                                            FontFamily="Segoe MDL2 Assets" Content="&#xE74D;" Margin="2"/>
+                                    </StackPanel>
+                                    <ListBox x:Name="LayersListBox" Grid.Row="2" Background="Transparent" ItemsSource="{Binding LayersContext}"
+                                             d:ItemsSource="{d:SampleData}" SelectionChanged="ListBox_SelectionChanged">
+                                        <ListBox.ItemTemplate>
+                                            <DataTemplate>
+                                                <Grid Width="225">
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="30"/>
+                                                        <ColumnDefinition Width="*"/>
+                                                    </Grid.ColumnDefinitions>
+                                                    <CheckBox Margin="2 0" Height="{Binding Path=ActualHeight, ElementName=CheckBoxPanel}" MinWidth="0"
+                                                          Width="{Binding Path=ActualHeight, RelativeSource={RelativeSource Self}}" x:Name="LayerEnabled"
+                                                              IsChecked="{Binding Enabled}"
+                                                          Checked="LayerEnabled_Checked" Unchecked="LayerEnabled_Checked" />
+                                                    <TextBox x:Name="LayerName" IsEnabled="False" Text="{Binding Name}" 
+                                                             Grid.Column="1" HorizontalAlignment="Stretch" LostFocus="LayerName_LostFocus"
+                                                             KeyDown="LayerName_KeyDown" Background="#40000000" TextAlignment="Center" VerticalContentAlignment="Center">
+                                                    </TextBox>
+                                                </Grid>
+                                            </DataTemplate>
+                                        </ListBox.ItemTemplate>
+                                    </ListBox>
+                                </Grid>
+                            </localUtils:ResetIsEnabled>
                         </StackPanel>
                     </Grid>
                 </Grid>
