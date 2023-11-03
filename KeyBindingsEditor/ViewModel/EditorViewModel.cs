@@ -489,7 +489,7 @@ namespace KeyBindingsEditor.ViewModel
                     .AppendLine("---")
                     .AppendLine()
                     .AppendLine("|Name|Binding Type|Key|Category|Title|Description|")
-                    .AppendLine("|---|---|---|---|---|---|");
+                    .AppendLine("|---|---|:---:|---|---|---|");
                 MarkupLayer(markdown, Configuration.Keyboard.Layers);
                 markdown.AppendLine();
                 // Add mouse definition.
@@ -499,7 +499,7 @@ namespace KeyBindingsEditor.ViewModel
                     .AppendLine("---")
                     .AppendLine()
                     .AppendLine("|Name|Binding Type|Key|Category|Title|Description|")
-                    .AppendLine("|---|---|---|---|---|---|");
+                    .AppendLine("|---|---|:---:|---|---|---|");
                 MarkupLayer(markdown, Configuration.Mouse.Layers);
                 markdown.AppendLine();
                 // Add gamepad definition.
@@ -509,7 +509,7 @@ namespace KeyBindingsEditor.ViewModel
                     .AppendLine("---")
                     .AppendLine()
                     .AppendLine("|Name|Binding Type|Key|Category|Title|Description|")
-                    .AppendLine("|---|---|---|---|---|---|");
+                    .AppendLine("|---|---|:---:|---|---|---|");
                 MarkupLayer(markdown, Configuration.Gamepad.Layers);
                 markdown.AppendLine();
                 File.WriteAllText(dialog.FileName, markdown.ToString());
@@ -523,7 +523,7 @@ namespace KeyBindingsEditor.ViewModel
             foreach (var layer in layers)
             {
                 MarkupSource(markdown, layer.Bindings);
-                markdown.AppendLine("|---|---|---|---|---|---|");
+                markdown.AppendLine("| --- | --- | --- | --- | --- | --- |");
             }
         }
 
